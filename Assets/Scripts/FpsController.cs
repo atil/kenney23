@@ -96,7 +96,7 @@ public class FpsController : MonoBehaviour
     private const float Sensitivity = 150;
 
     // Caching...
-    private readonly Collider[] _overlappingColliders = new Collider[10]; // Hope no more is needed
+    private readonly Collider[] _overlappingColliders = new Collider[20]; // Hope no more is needed
     private Transform _ghostJumpRayPosition;
 
     // Some information to persist
@@ -151,7 +151,7 @@ public class FpsController : MonoBehaviour
         // We use GetAxisRaw, since we need it to feel as responsive as possible
         _moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !_isGonnaJump)
+        if (false && Input.GetKeyDown(KeyCode.Space) && !_isGonnaJump)
         {
             _isGonnaJump = true;
         }

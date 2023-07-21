@@ -4,7 +4,7 @@ using JamKit;
 
 public class Footsteps : MonoBehaviour
 {
-    private const float DistancePerStep = 3f;
+    private const float DistancePerStep = 1f;
 
     [SerializeField]
     private AudioSource _audioSource;

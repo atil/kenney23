@@ -1,8 +1,10 @@
 - Create project, add jamkit, arrange web build
 - Read pixels and instantiate prefabs
 - Add player controller
-
 - Create proper prefabs
+
+- Passing levels
+
 - Create navmesh
 - Create enemy: prefab, states (sleep, move, charge, fire)
 - Add player weapon(s)

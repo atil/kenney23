@@ -250,8 +250,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.4
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1602203397449796
@@ -356,7 +356,7 @@ MonoBehaviour:
   _groundAccelerationCoeff: 500
   _airAccelCoeff: 1
   _airDecelCoeff: 1.5
-  _maxSpeedAlongOneDimension: 8
+  _maxSpeedAlongOneDimension: 4
   _friction: 15
   _frictionSpeedThreshold: 0.5
   _jumpStrength: 8

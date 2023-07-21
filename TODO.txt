@@ -1,0 +1,11 @@
+- Create project, add jamkit, arrange web build
+
+- Read pixels and instantiate prefabs
+- Add player controller
+- Create navmesh
+- Create enemy: prefab, states (sleep, move, charge, fire)
+- Add player weapon(s)
+- Make multiple maps playable
+- SFX
+- Find name
+- Polish: map texture variety, decorations/props, enemy thought bubbles

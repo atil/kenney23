@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -347,6 +347,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _globals: {fileID: 11400000, guid: b27ece0341ed8b14ea3b992f273fbb00, type: 2}
   _ui: {fileID: 1470214248}
+  _testLevel: {fileID: 2800000, guid: 722712fb52bb01648935ae5afa0bb8ac, type: 3}
+  _floorPrefab: {fileID: 6309663980564988747, guid: af79a406cf0d49b438095df7eccf5b22, type: 3}
+  _wallPrefab: {fileID: 1920152320156087891, guid: 4dcd38e7238918c4789caf8ebf878069, type: 3}
 --- !u!4 &1849588138
 Transform:
   m_ObjectHideFlags: 0
@@ -397,7 +400,7 @@ Camera:
   m_GameObject: {fileID: 1999863642}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2

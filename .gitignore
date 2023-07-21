@@ -1,5 +1,6 @@
 .vs/
 Library/
+Build/
 Logs/
 Temp/
 obj/

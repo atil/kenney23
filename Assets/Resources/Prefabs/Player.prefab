@@ -353,7 +353,7 @@ MonoBehaviour:
   - {fileID: 4214202988093086}
   - {fileID: 4908774125912330}
   _radius: 2
-  _groundAccelerationCoeff: 500
+  _groundAccelerationCoeff: 100
   _airAccelCoeff: 1
   _airDecelCoeff: 1.5
   _maxSpeedAlongOneDimension: 4
@@ -363,6 +363,7 @@ MonoBehaviour:
   _gravityAmount: 24
   _airControlPrecision: 16
   _airControlAdditionForward: 8
+  CanControl: 1
 --- !u!114 &114722541770350444
 MonoBehaviour:
   m_ObjectHideFlags: 0

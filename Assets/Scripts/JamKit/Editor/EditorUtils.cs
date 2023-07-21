@@ -30,6 +30,12 @@ namespace JamKit
             ProfilerDriver.enabled = !ProfilerDriver.enabled;
         }
 
+        [MenuItem("Torreng/Cleanup playerprefs", false, 10)]
+        private static void CleanupPlayerprefs()
+        {
+            PlayerPrefs.SetInt("kenney.currentLevel", 0);
+        }
+
         [MenuItem("Torreng/Deploy to itch", false, 21)]
         private static void Deploy()
         {

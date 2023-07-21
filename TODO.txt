@@ -1,14 +1,17 @@
 - Create project, add jamkit, arrange web build
 - Read pixels and instantiate prefabs
 - Add player controller
-- Create proper prefabs
-
-- Passing levels
-
-- Create navmesh
+- Proper prefabs
+- Passing levels, reaching end screen
+------- 1st day ----------
+- Improve exit prefab looks
+- Screen fade colors
+- Create navmesh after instantiation. Hide it behind the loading screen
 - Create enemy: prefab, states (sleep, move, charge, fire)
+- UI for health
 - Add player weapon(s)
-- Make multiple maps playable
+- Add font
 - SFX
 - Find name
-- Polish: map texture variety, decorations/props, enemy thought bubbles
+- Story
+- Polish: map texture variety, decorations/props, enemy thought bubbles indicating their state

@@ -40,5 +40,17 @@ namespace JamKit
         [Header("Build")]
         [SerializeField] private Color _buildSplashBackgroundColor;
         public Color BuildSplashBackgroundColor => _buildSplashBackgroundColor;
+
+        [Header("KENNEY!")]
+        public Texture2D[] Levels;
+        public GameObject FloorPrefab;
+        public GameObject WallPrefab;
+        public GameObject BorderPrefab;
+        public GameObject ExitPrefab;
+
+        public Color FloorColor = Color.white;
+        public Color WallColor = Color.black;
+        public Color PlayerColor = new(1, 1, 0, 1);
+        public Color ExitColor = new(1, 0, 1, 1);
     }
 }

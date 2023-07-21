@@ -27,7 +27,7 @@ namespace JamKit
             Fade(FadeType.FadeIn, sceneTransitionParams, postAction);
         }
 
-        protected void FadeOut(SceneTransitionParams sceneTransitionParams = null, Action postAction = null)
+        public void FadeOut(SceneTransitionParams sceneTransitionParams = null, Action postAction = null)
         {
             Fade(FadeType.FadeOut, sceneTransitionParams, postAction);
         }
@@ -51,6 +51,9 @@ namespace JamKit
                     () =>
                     {
                         _coverImage.color = targetColor;
+                        if (_coverImage != null) // Might be destroyed during fade
+                        {
+                        }
                         postAction?.Invoke();
                     });
             }

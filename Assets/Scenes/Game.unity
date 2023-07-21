@@ -481,13 +481,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _globals: {fileID: 11400000, guid: b27ece0341ed8b14ea3b992f273fbb00, type: 2}
   _ui: {fileID: 1470214248}
-  _testLevel: {fileID: 2800000, guid: 722712fb52bb01648935ae5afa0bb8ac, type: 3}
+  _forceLevel: -1
   _player: {fileID: 1354250682}
   _levelRoot: {fileID: 891157000}
   _groundCollider: {fileID: 356971936}
-  _floorPrefab: {fileID: 6309663980564988747, guid: af79a406cf0d49b438095df7eccf5b22, type: 3}
-  _wallPrefab: {fileID: 1920152320156087891, guid: 4dcd38e7238918c4789caf8ebf878069, type: 3}
-  _borderPrefab: {fileID: 1920152320156087891, guid: 2864d2fce8d63f8418e7287d541bdf17, type: 3}
 --- !u!4 &1849588138
 Transform:
   m_ObjectHideFlags: 0
@@ -557,10 +554,6 @@ PrefabInstance:
     - target: {fileID: 4654546630272882, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114024675695448250, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
-      propertyPath: _groundAccelerationCoeff
-      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 680a11299af23874bbc0b94457026c5e, type: 3}

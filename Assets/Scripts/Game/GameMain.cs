@@ -7,8 +7,9 @@ using Unity.AI.Navigation;
 
 namespace Game
 {
-    public class GameMain : MonoBehaviour
+    public partial class GameMain : MonoBehaviour
     {
+        [Header("Game")]
         [SerializeField] private Globals _globals;
         [SerializeField] private GameUi _ui;
 
@@ -29,6 +30,7 @@ namespace Game
             _prefabs.Add(_globals.PlayerColor, _globals.FloorPrefab);
             _prefabs.Add(_globals.WallColor, _globals.WallPrefab);
             _prefabs.Add(_globals.ExitColor, _globals.ExitPrefab);
+            _prefabs.Add(_globals.Enemy1Color, _globals.FloorPrefab);
 
             if (_forceLevel == -1)
             {
@@ -64,6 +66,11 @@ namespace Game
                             _player.transform.position = tilePos + new Vector3(0, 0.5f, 0);
                         }
 
+                        if (color == _globals.Enemy1Color)
+                        {
+                            AddEnemy(color, tilePos);
+                        }
+
                         bool isBorder = (i == 0 || i == w - 1 || j == 0 || j == h - 1);
                         if (prefab == _globals.WallPrefab && isBorder)
                         {
@@ -75,12 +82,17 @@ namespace Game
                     }
                     else
                     {
-                        Debug.Log($"Unrecogized color: {color}. Instantiating floor at {tilePos}");
+                        Debug.LogError($"Unrecogized color: {color}. Instantiating floor at {tilePos}");
                         GameObject tileGo = Instantiate(_globals.FloorPrefab, _levelRoot);
                         tileGo.transform.position = tilePos;
                     }
                 }
             }
+        }
+
+        private void Update()
+        {
+            UpdateEnemies();
         }
 
         public void OnExitTriggered()
@@ -100,6 +112,16 @@ namespace Game
                     SceneManager.LoadScene("Game");
                 }
             });
+        }
+
+        private void DrawPath(Vector3[] path)
+        {
+            for (int i = 0; i < path.Length - 1; i++)
+            {
+                Vector3 p1 = path[i];
+                Vector3 p2 = path[i + 1];
+                Debug.DrawLine(p1, p2);
+            }
         }
     }
 }

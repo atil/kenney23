@@ -177,7 +177,7 @@ namespace Game
             {
                 //_pitch += Input.GetAxis("Mouse Y") * -Sensitivity * dt;
                 //_pitch = Mathf.Clamp(_pitch, -89, 89);
-                _camTransform.localRotation = Quaternion.Euler(Vector3.right * _pitch);
+                //_camTransform.localRotation = Quaternion.Euler(Vector3.right * _pitch);
                 _transform.rotation *= Quaternion.Euler(Input.GetAxis("Mouse X") * Sensitivity * dt * Vector3.up);
             }
 

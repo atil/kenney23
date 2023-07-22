@@ -173,7 +173,7 @@ namespace Game
 
         private void OnEnemyAttack(Enemy enemy)
         {
-            if (IsPlayerDead) // Player died while this enemy swings
+            if (IsPlayerDead) // Player was killed by something else while this enemy swings
             {
                 enemy.State = EnemyState.Sleep;
                 enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
@@ -190,6 +190,12 @@ namespace Game
                 {
                     _ui.ShowDamage();
                     _ui.SetHealth(_playerHealth, null);
+
+                    _playerCamera.Rotate(new(0, 0, 10), Space.Self);
+                    CoroutineStarter.RunDelayed(0.3f, () =>
+                    {
+                        _playerCamera.Rotate(new(0, 0, -10), Space.Self);
+                    });
                 }
                 else // me ded
                 {
@@ -203,6 +209,19 @@ namespace Game
                     {
                         CoroutineStarter.Stop(_attackCoroutine);
                     }
+
+                    // Sinking FX
+                    Vector3 startPos = _playerCamera.localPosition;
+                    Vector3 endPos = startPos - new Vector3(0, 0.3f, 0);
+                    Coroutine cameraDeadSinkCoroutine = Curve.Tween(AnimationCurve.Linear(0, 0, 1, 1), delay * 0.5f,
+                        t =>
+                        {
+                            _playerCamera.localPosition = Vector3.Lerp(startPos, endPos, t);
+                        },
+                        () =>
+                        {
+                            cameraDeadSinkCoroutine = null;
+                        });
 
                     CoroutineStarter.RunDelayed(delay, () =>
                     {

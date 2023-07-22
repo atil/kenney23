@@ -12,11 +12,12 @@
 - Create enemy: prefab, states (sleep, move, charge, fire)
 - UI for health & dying
 - Add player weapon: sword
+- Camera tilt when the player receives damage
 
 - Add font
 
 - SFX
-- Camera tilt when the player receives damage (and dies)
+- Camera tilt when the player and dies
 - Add player weapon: crossbow
 - Find name
 - Story

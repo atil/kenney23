@@ -18,6 +18,7 @@ namespace Game
         private int _currentLevel = 0;
 
         [SerializeField] private Transform _player;
+        [SerializeField] private Transform _playerCamera;
         [SerializeField] private Transform _levelRoot;
         [SerializeField] private Transform _groundCollider;
         [SerializeField] private NavMeshSurface _navmeshSurface;

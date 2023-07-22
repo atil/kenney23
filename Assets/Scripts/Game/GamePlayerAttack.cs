@@ -19,11 +19,15 @@ namespace Game
         [SerializeField] private Transform _swordDown;
         [SerializeField] private SphereCollider _swordDamageZone;
         [SerializeField] private Transform _crossbowTransform;
+        [SerializeField] private Transform _arrowsRoot;
+        [SerializeField] private Transform _arrowSpawnSlot;
 
         private bool _isSwordAttacking = false;
         private Coroutine _attackCoroutine = null;
         private WeaponType _currentWeapon = WeaponType.Sword;
         private bool _isSwitchingWeapons = false;
+
+        private List<Transform> _arrows = new();
 
         private Dictionary<WeaponType, GameObject> _weaponGos = new();
 
@@ -35,6 +39,19 @@ namespace Game
 
         private void UpdatePlayerAttack()
         {
+            List<Transform> destroyedArrows = new();
+            foreach (Transform arrowTransform in _arrows)
+            {
+                UpdateArrow(arrowTransform, out bool isDestroyed);
+
+                if (isDestroyed) destroyedArrows.Add(arrowTransform);
+            }
+            foreach (Transform destroyedArrow in destroyedArrows)
+            {
+                _arrows.Remove(destroyedArrow);
+                Destroy(destroyedArrow.gameObject);
+            }
+
             if (IsPlayerDead) return;
 
             switch (_currentWeapon)
@@ -124,7 +141,7 @@ namespace Game
 
                 if (hit)
                 {
-                    OnEnemyHit(enemy);
+                    OnEnemyHit(enemy, _globals.SwordDamage);
                 }
             }
 
@@ -132,12 +149,42 @@ namespace Game
 
         private void CrossbowAttack()
         {
-
+            Transform arrowTransform = Instantiate(_globals.ArrowPrefab, _arrowsRoot).transform;
+            arrowTransform.SetPositionAndRotation(_arrowSpawnSlot.position, _arrowSpawnSlot.rotation);
+            _arrows.Add(arrowTransform);
         }
 
-        private void OnEnemyHit(Enemy enemy)
+        private void UpdateArrow(Transform arrowTransform, out bool isDestroyed)
         {
-            enemy.Health--;
+            arrowTransform.position += arrowTransform.forward * (_globals.ArrowSpeed * Time.deltaTime);
+
+            isDestroyed = false;
+            const float ArrowHitRadius = 0.5f;
+            Collider[] hits = Physics.OverlapSphere(arrowTransform.position, ArrowHitRadius);
+            foreach (Collider hitCollider in hits)
+            {
+                if (hitCollider.gameObject.layer == LayerMask.NameToLayer("EnemyCollider"))
+                {
+                    Enemy hitEnemy = _enemies.Find(x => x.Collider = hitCollider);
+                    Debug.Assert(hitEnemy != null);
+
+                    OnEnemyHit(hitEnemy, _globals.ArrowDamage);
+
+                    isDestroyed = true;
+                    break;
+                }
+
+                if (hitCollider.gameObject.CompareTag("Wall"))
+                {
+                    isDestroyed = true;
+                    break;
+                }
+            }
+        }
+
+        private void OnEnemyHit(Enemy enemy, int damage)
+        {
+            enemy.Health -= damage;
 
             // Interrupt enemy
             if (enemy.State == EnemyState.AttackCharge)

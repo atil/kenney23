@@ -63,16 +63,17 @@ namespace JamKit
         public float TweenTickDuration = 0.075f;
         public int PlayerHealth = 3;
         public float Enemy1Speed = 2.0f;
-        public int Enemy1Health = 3;
+        public int Enemy1Health = 5;
         public float EnemyAttackRange = 1.0f;
         public AnimationCurve EnemyGetDamagedCurve;
+        public float ArrowSpeed = 5.0f;
+        public int SwordDamage = 2;
+        public int ArrowDamage = 1;
 
         [Space]
         public Sprite HearthFull;
         public Sprite HearthEmpty;
         public GameObject UiDamageFeedbackPrefab;
         public AnimationCurve UiDamageFeedbackCurve;
-
-
     }
 }

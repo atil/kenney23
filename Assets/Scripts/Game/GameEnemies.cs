@@ -24,13 +24,18 @@ namespace Game
         {
             public EnemyType Type;
             public float MoveSpeed;
+            public int Health;
             public GameObject Go;
+            public Collider Collider;
             public EnemyState State;
             public NavMeshPath WalkPath;
+
             public Transform RootTransform;
             public Transform VisualTransform;
             public Transform ChargeSourceTransform;
             public Transform ChargeTargetTransform;
+
+            public Coroutine AttackCoroutine;
 
             public Vector3 Pos
             {
@@ -66,6 +71,8 @@ namespace Game
                 Type = type,
                 MoveSpeed = moveSpeed,
                 Go = enemyGo,
+                Collider = enemyGo.transform.Find("Collision").GetComponent<Collider>(),
+                Health = _globals.Enemy1Health,
                 State = EnemyState.Sleep,
                 WalkPath = new(),
                 RootTransform = enemyGo.transform.Find("Root"),
@@ -137,7 +144,8 @@ namespace Game
                         Vector3 targetPos = enemy.ChargeTargetTransform.localPosition;
                         Quaternion targetRot = enemy.ChargeTargetTransform.localRotation;
 
-                        Curve.Tween(AnimationCurve.EaseInOut(0f, 0f, 1f, 1f), ChargeDuration,
+                        const float EnemyAttackTickDuration = 0.1f;
+                        enemy.AttackCoroutine = Curve.TweenDiscrete(AnimationCurve.EaseInOut(0f, 0f, 1f, 1f), ChargeDuration, EnemyAttackTickDuration,
                             t =>
                             {
                                 enemy.VisualTransform.SetLocalPositionAndRotation(Vector3.Lerp(srcPos, targetPos, t), Quaternion.Slerp(srcRot, targetRot, t));
@@ -170,7 +178,6 @@ namespace Game
             }
 
             enemy.State = EnemyState.Attack;
-            Debug.Log("Attack!");
 
             if (Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < _globals.EnemyAttackRange) // Still in the attack range
             {
@@ -183,12 +190,16 @@ namespace Game
                 }
                 else // ded
                 {
+                    enemy.State = EnemyState.Sleep;
+                    enemy.VisualTransform.SetLocalPositionAndRotation(srcPos, srcRot);
+
                     const float delay = 2f;
                     _ui.ShowDead(delay);
                     _player.GetComponent<FpsController>().CanControl = false;
-
-                    enemy.State = EnemyState.Sleep;
-                    enemy.VisualTransform.SetLocalPositionAndRotation(srcPos, srcRot);
+                    if (_attackCoroutine != null)
+                    {
+                        CoroutineStarter.Stop(_attackCoroutine);
+                    }
 
                     CoroutineStarter.RunDelayed(delay, () =>
                     {

@@ -64,9 +64,9 @@ namespace JamKit
             }
         }
 
-        public static void TweenDiscrete(AnimationCurve curve, float duration, float tickInterval, Action<float> perTickAction, Action postAction)
+        public static Coroutine TweenDiscrete(AnimationCurve curve, float duration, float tickInterval, Action<float> perTickAction, Action postAction)
         {
-            CoroutineStarter.Run(TweenDiscreteCoroutine(curve, duration, tickInterval, perTickAction, postAction));
+            return CoroutineStarter.Run(TweenDiscreteCoroutine(curve, duration, tickInterval, perTickAction, postAction));
         }
 
         private static IEnumerator TweenDiscreteCoroutine(AnimationCurve curve, float duration, float tickInterval, Action<float> perTickAction, Action postAction)

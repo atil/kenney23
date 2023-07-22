@@ -99,6 +99,7 @@ namespace Game
 
         private void Update()
         {
+            UpdatePlayerAttack();
             UpdateEnemies();
         }
 

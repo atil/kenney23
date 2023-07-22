@@ -16,6 +16,9 @@
 
 - Add font
 - SFX
+- Camera tilt when the player receives damage
 - Find name
 - Story
-- Polish: map texture variety, decorations/props, enemy thought bubbles indicating their state
+- Map texture variety, 
+- Decorations/props, 
+- Enemy thought bubbles indicating their state

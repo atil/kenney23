@@ -17,10 +17,11 @@
 - SFX
 - Replace cubes with quads
 - Enemy die animation
-
 - Add player weapon: crossbow
 
 - Add ranged enemy
+
+- Make level textures a little more readable
 - Level design
 - Find name
 - Story

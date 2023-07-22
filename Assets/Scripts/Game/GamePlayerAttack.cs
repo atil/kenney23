@@ -19,6 +19,7 @@ namespace Game
         [SerializeField] private Transform _swordDown;
         [SerializeField] private SphereCollider _swordDamageZone;
         [SerializeField] private Transform _crossbowTransform;
+        [SerializeField] private Transform _crossbowRecoilKeyframe;
         [SerializeField] private Transform _arrowsRoot;
         [SerializeField] private Transform _arrowSpawnSlot;
 
@@ -28,6 +29,7 @@ namespace Game
         private bool _isSwitchingWeapons = false;
 
         private List<Transform> _arrows = new();
+        private bool _isCrossbowAttacking = false;
 
         private Dictionary<WeaponType, GameObject> _weaponGos = new();
 
@@ -70,7 +72,7 @@ namespace Game
                     }
                     break;
                 case WeaponType.Crossbow:
-                    if (!_isSwitchingWeapons)
+                    if (!_isCrossbowAttacking && !_isSwitchingWeapons)
                     {
                         if (Input.GetMouseButtonDown(0))
                         {
@@ -149,6 +151,27 @@ namespace Game
 
         private void CrossbowAttack()
         {
+            _isCrossbowAttacking = true;
+
+            Vector3 src = _crossbowTransform.localPosition;
+            Vector3 target = _crossbowRecoilKeyframe.localPosition;
+
+            const float CrossbowRecoilDuration = 0.6f;
+            _crossbowTransform.localPosition = target;
+            CoroutineStarter.RunDelayed(CrossbowRecoilDuration, () =>
+            {
+                Curve.TweenDiscrete(AnimationCurve.Linear(0, 0, 1, 1), 0.3f, _globals.DiscreteTickInterval * 0.5f,
+                    t =>
+                    {
+                        _crossbowTransform.localPosition = Vector3.Lerp(target, src, t);
+                    },
+                    () =>
+                    {
+                        _crossbowTransform.localPosition = src;
+                        _isCrossbowAttacking = false;
+                    });
+            });
+
             Transform arrowTransform = Instantiate(_globals.ArrowPrefab, _arrowsRoot).transform;
             arrowTransform.SetPositionAndRotation(_arrowSpawnSlot.position, _arrowSpawnSlot.rotation);
             _arrows.Add(arrowTransform);

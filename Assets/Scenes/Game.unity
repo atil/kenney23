@@ -153,6 +153,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 877589114}
+  - {fileID: 1267569404}
   - {fileID: 244713896}
   - {fileID: 702159040}
   - {fileID: 1420916202}
@@ -340,7 +341,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 79045107}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 9.907, y: -29.33, z: 18.992}
 --- !u!23 &244713897
 MeshRenderer:
@@ -828,7 +829,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 79045107}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -15.127, y: -31.819, z: 53.065}
 --- !u!1 &715023304
 GameObject:
@@ -883,7 +884,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &877589114
 Transform:
   m_ObjectHideFlags: 0
@@ -1101,6 +1102,37 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1267569403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1267569404}
+  m_Layer: 0
+  m_Name: CrossbowRecoilKeyframe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1267569404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267569403}
+  m_LocalRotation: {x: 0.6471767, y: -0, z: -0, w: 0.7623401}
+  m_LocalPosition: {x: 0, y: -0.073, z: 0.07}
+  m_LocalScale: {x: 0.13507043, y: 0.13507043, z: 0.13507043}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 79045107}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 80.658, y: 0, z: 0}
 --- !u!4 &1354250682 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4654546630272882, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
@@ -1135,7 +1167,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 79045107}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -18.392, y: -42.606, z: -15.933}
 --- !u!1 &1470214247
 GameObject:
@@ -1470,6 +1502,7 @@ MonoBehaviour:
   _swordDown: {fileID: 1420916202}
   _swordDamageZone: {fileID: 1216173244}
   _crossbowTransform: {fileID: 877589114}
+  _crossbowRecoilKeyframe: {fileID: 1267569404}
   _arrowsRoot: {fileID: 222207914}
   _arrowSpawnSlot: {fileID: 1533404351}
 --- !u!4 &1849588138

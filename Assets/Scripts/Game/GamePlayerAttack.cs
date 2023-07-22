@@ -1,7 +1,5 @@
 using JamKit;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.YamlDotNet.Serialization;
 using UnityEngine;
 
 namespace Game
@@ -56,7 +54,6 @@ namespace Game
 
         private void TrySwordDamage()
         {
-            List<Enemy> killedEnemies = new();
             foreach (Enemy enemy in _enemies)
             {
                 Collider c1 = _swordDamageZone;
@@ -67,43 +64,33 @@ namespace Game
 
                 if (hit)
                 {
-                    OnEnemyHit(enemy, out bool didKillEnemy);
-                    if (didKillEnemy)
-                    {
-                        killedEnemies.Add(enemy);
-                    }
+                    OnEnemyHit(enemy);
                 }
             }
 
-            foreach (Enemy killedEnemy in killedEnemies)
-            {
-                _enemies.Remove(killedEnemy);
-            }
         }
 
-        private void OnEnemyHit(Enemy enemy, out bool didKillEnemy)
+        private void OnEnemyHit(Enemy enemy)
         {
-            //enemy.Health--;
+            enemy.Health--;
+
+            // Interrupt enemy
+            if (enemy.State == EnemyState.AttackCharge)
+            {
+                CoroutineStarter.Stop(enemy.AttackCoroutine);
+                enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
+                enemy.State = EnemyState.Move;
+            }
 
             if (enemy.Health <= 0) // pwned
             {
-                KillEnemy(enemy);
-                didKillEnemy = true;
+                CoroutineStarter.Run(KillEnemyCoroutine(enemy));
             }
             else // hit
             {
-                // Interrupt enemy
-                if (enemy.State == EnemyState.AttackCharge)
-                {
-                    CoroutineStarter.Stop(enemy.AttackCoroutine);
-
-                    enemy.State = EnemyState.Move;
-                    enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
-                }
 
                 Sfx.Instance.PlayRandom("EnemyHit");
                 PlayEnemyHitFX(enemy);
-                didKillEnemy = false;
             }
         }
 
@@ -124,14 +111,24 @@ namespace Game
                 });
         }
 
-        private void KillEnemy(Enemy enemy)
+        private IEnumerator KillEnemyCoroutine(Enemy enemy)
         {
             if (enemy.AttackCoroutine != null)
             {
                 CoroutineStarter.Stop(enemy.AttackCoroutine);
             }
 
-            Destroy(enemy.Go);
+            enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
+            enemy.State = EnemyState.Dead;
+
+            Material enemyMaterial = enemy.VisualTransform.GetComponent<MeshRenderer>().material;
+            enemyMaterial.SetTexture("_MainTex", _globals.Enemy1Die0);
+
+            yield return new WaitForSeconds(_globals.DiscreteTickInterval);
+
+            enemyMaterial.SetTexture("_MainTex", _globals.Enemy1Die1);
+
+            enemy.Collider.enabled = false;
         }
 
     }

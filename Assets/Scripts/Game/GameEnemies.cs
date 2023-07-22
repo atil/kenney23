@@ -13,6 +13,7 @@ namespace Game
             Move,
             AttackCharge,
             Attack,
+            Dead,
         }
 
         private enum EnemyType
@@ -164,6 +165,8 @@ namespace Game
                 case EnemyState.AttackCharge:
                     break;
                 case EnemyState.Attack:
+                    break;
+                case EnemyState.Dead:
                     break;
                 default:
                     Debug.LogError($"Unrecognized state: {enemy.State}. Switching to move");

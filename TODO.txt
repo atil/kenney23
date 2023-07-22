@@ -16,14 +16,15 @@
 - Add font and arrange splash/end texts
 - SFX
 - Replace cubes with quads
-
 - Enemy die animation
 
 - Add player weapon: crossbow
+
 - Level design
 - Find name
 - Story
 - Add ranged enemy
+- Enemy hit feedback: color change
 
 Nice-to-have:
 - Map texture variety, 

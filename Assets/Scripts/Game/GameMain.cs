@@ -24,6 +24,9 @@ namespace Game
 
         private Dictionary<Color, GameObject> _prefabs = new();
 
+        private int _playerHealth;
+        private bool IsPlayerDead => _playerHealth <= 0;
+
         private void Start()
         {
             _prefabs.Add(_globals.FloorColor, _globals.FloorPrefab);
@@ -40,6 +43,10 @@ namespace Game
             {
                 _currentLevel = _forceLevel;
             }
+
+            _playerHealth = _globals.PlayerHealth;
+
+            _ui.SetHealth(_playerHealth, null);
 
             LoadLevelFrom(_globals.Levels[_currentLevel]);
 
@@ -99,18 +106,18 @@ namespace Game
         {
             _currentLevel++;
             PlayerPrefs.SetInt("kenney.currentLevel", _currentLevel);
+
+            string nextSceneName = _currentLevel == _globals.Levels.Length ? "End" : "Game";
+            LevelEnd(nextSceneName);
+        }
+
+        private void LevelEnd(string nextSceneName)
+        {
             _ui.FadeOut(_globals.SceneTransitionParams);
             _player.GetComponent<FpsController>().CanControl = false;
             CoroutineStarter.RunDelayed(_globals.SceneTransitionParams.Duration + 0.01f, () =>
             {
-                if (_currentLevel == _globals.Levels.Length)
-                {
-                    SceneManager.LoadScene("End");
-                }
-                else
-                {
-                    SceneManager.LoadScene("Game");
-                }
+                SceneManager.LoadScene(nextSceneName);
             });
         }
 

@@ -98,7 +98,7 @@ namespace Game
                             }
                         }
 
-                        if (!hasWall)
+                        if (!hasWall && !IsPlayerDead)
                         {
                             // Awakened!
                             enemy.State = EnemyState.Move;
@@ -125,14 +125,13 @@ namespace Game
                             enemy.State = EnemyState.AttackCharge;
 
                             // Initiate charge
-                            const float ChargeDuration = 1.0f;
+                            const float ChargeDuration = 0.5f;
                             Vector3 srcPos = enemy.ChargeSourceTransform.localPosition;
                             Quaternion srcRot = enemy.ChargeSourceTransform.localRotation;
 
                             Vector3 targetPos = enemy.ChargeTargetTransform.localPosition;
                             Quaternion targetRot = enemy.ChargeTargetTransform.localRotation;
 
-                            Debug.Log("Charging");
                             Curve.Tween(AnimationCurve.EaseInOut(0f, 0f, 1f, 1f), ChargeDuration,
                                 t =>
                                 {
@@ -142,6 +141,34 @@ namespace Game
                                 {
                                     enemy.State = EnemyState.Attack;
                                     Debug.Log("Attack!");
+
+                                    if (Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < AttackRange) // Still in the attack range
+                                    {
+
+                                        _playerHealth--;
+
+                                        if (_playerHealth > 0) // ow!
+                                        {
+                                            _ui.ShowDamage();
+                                            _ui.SetHealth(_playerHealth, null);
+                                        }
+                                        else // ded
+                                        {
+                                            const float delay = 2f;
+                                            _ui.ShowDead(delay);
+                                            _player.GetComponent<FpsController>().CanControl = false;
+
+                                            enemy.State = EnemyState.Sleep;
+                                            enemy.VisualTransform.SetLocalPositionAndRotation(srcPos, srcRot);
+
+                                            CoroutineStarter.RunDelayed(delay, () =>
+                                            {
+                                                LevelEnd("Game");
+                                            });
+
+                                            return;
+                                        }
+                                    }
 
                                     enemy.VisualTransform.SetLocalPositionAndRotation(srcPos, srcRot);
                                     CoroutineStarter.RunDelayed(1.0f, () =>

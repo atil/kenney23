@@ -57,6 +57,15 @@ namespace JamKit
         public Color Enemy1Color = new(1, 0, 0, 1);
 
         [Space]
+        public int PlayerHealth = 3;
         public float Enemy1Speed = 2.0f;
+
+        [Space]
+        public Sprite HearthFull;
+        public Sprite HearthEmpty;
+        public GameObject UiDamageFeedbackPrefab;
+        public AnimationCurve UiDamageFeedbackCurve;
+
+
     }
 }

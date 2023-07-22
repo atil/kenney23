@@ -15,10 +15,10 @@
 - Camera tilt when the player receives damage & dies
 - Add font and arrange splash/end texts
 - SFX
-
-- Replace cubes and quads
+- Replace cubes with quads
 
 - Enemy die animation
+
 - Add player weapon: crossbow
 - Level design
 - Find name

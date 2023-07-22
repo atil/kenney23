@@ -48,7 +48,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 722712fb52bb01648935ae5afa0bb8ac, type: 3}
   - {fileID: 2800000, guid: 722712fb52bb01648935ae5afa0bb8ac, type: 3}
   FloorPrefab: {fileID: 6309663980564988747, guid: af79a406cf0d49b438095df7eccf5b22, type: 3}
-  WallPrefab: {fileID: 1920152320156087891, guid: 4dcd38e7238918c4789caf8ebf878069, type: 3}
+  WallPrefab: {fileID: 1920152320156087891, guid: a66040264490cb84ea6a0060d448157d, type: 3}
   BorderPrefab: {fileID: 1920152320156087891, guid: 2864d2fce8d63f8418e7287d541bdf17, type: 3}
   ExitPrefab: {fileID: 1920152320156087891, guid: e6ae397239099994ba2e8240bc8a55c0, type: 3}
   Enemy1Prefab: {fileID: 4179976915047189957, guid: ee7f3466cd3b9584bb0bc9255332d196, type: 3}

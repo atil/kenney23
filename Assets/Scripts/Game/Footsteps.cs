@@ -39,15 +39,16 @@ namespace Game
                 _shuffledClips.Shuffle();
             }
 
-            if (isGonnaJump && isGrounded)
-            {
-                _audioSource.PlayOneShot(_jumpClip);
-            }
+            // Kenney: don't need to jump
+            //if (isGonnaJump && isGrounded)
+            //{
+            //    _audioSource.PlayOneShot(_jumpClip);
+            //}
 
-            if (isLandedThisFrame && !isGonnaJump)
-            {
-                _audioSource.PlayOneShot(_landClip);
-            }
+            //if (isLandedThisFrame && !isGonnaJump)
+            //{
+            //    _audioSource.PlayOneShot(_landClip);
+            //}
 
             if (isGrounded)
             {

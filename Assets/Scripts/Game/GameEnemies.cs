@@ -117,6 +117,7 @@ namespace Game
                     if (!hasWall && !IsPlayerDead)
                     {
                         // Awakened!
+                        Sfx.Instance.PlayRandom("Enemy1Awake");
                         enemy.State = EnemyState.Move;
                     }
 
@@ -188,6 +189,7 @@ namespace Game
 
                 if (_playerHealth > 0) // ow!
                 {
+                    Sfx.Instance.PlayRandom("PlayerHurt");
                     _ui.ShowDamage();
                     _ui.SetHealth(_playerHealth, null);
 
@@ -211,6 +213,8 @@ namespace Game
                     }
 
                     // Sinking FX
+                    _playerCamera.Rotate(new(0, 0, 10), Space.Self);
+                    _weaponCamera.gameObject.SetActive(false);
                     Vector3 startPos = _playerCamera.localPosition;
                     Vector3 endPos = startPos - new Vector3(0, 0.3f, 0);
                     Coroutine cameraDeadSinkCoroutine = Curve.Tween(AnimationCurve.Linear(0, 0, 1, 1), delay * 0.5f,
@@ -222,6 +226,8 @@ namespace Game
                         {
                             cameraDeadSinkCoroutine = null;
                         });
+
+                    Sfx.Instance.Play("PlayerDie");
 
                     CoroutineStarter.RunDelayed(delay, () =>
                     {

@@ -17,6 +17,7 @@ namespace Game
 
         public void OnClickedPlayButton()
         {
+            Sfx.Instance.Play("ButtonClick");
             _playButton.interactable = false;
             FadeOut(null, () => SceneManager.LoadScene("Game"));
         }

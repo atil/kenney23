@@ -19,7 +19,7 @@ namespace Game
 
         private void UpdatePlayerAttack()
         {
-            if (!_isSwordAttacking && Input.GetMouseButtonDown(0))
+            if (!_isSwordAttacking && !IsPlayerDead && Input.GetMouseButtonDown(0))
             {
                 SwordAttack();
             }
@@ -36,12 +36,19 @@ namespace Game
 
             Vector3 pos = _swordTransform.localPosition;
             Quaternion rot = _swordTransform.localRotation;
+
             yield return new WaitForSeconds(0.1f);
+
             _swordTransform.SetLocalPositionAndRotation(_swordCharge.localPosition, _swordCharge.localRotation);
+
             yield return new WaitForSeconds(0.3f);
+
+            Sfx.Instance.Play("SwordSwing");
             TrySwordDamage();
             _swordTransform.SetLocalPositionAndRotation(_swordDown.localPosition, _swordDown.localRotation);
+
             yield return new WaitForSeconds(0.2f);
+
             _swordTransform.SetLocalPositionAndRotation(pos, rot);
 
             _isSwordAttacking = false;
@@ -94,6 +101,7 @@ namespace Game
                     enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
                 }
 
+                Sfx.Instance.PlayRandom("EnemyHit");
                 PlayEnemyHitFX(enemy);
                 didKillEnemy = false;
             }

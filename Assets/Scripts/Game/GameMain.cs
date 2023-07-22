@@ -19,6 +19,7 @@ namespace Game
 
         [SerializeField] private Transform _player;
         [SerializeField] private Transform _playerCamera;
+        [SerializeField] private Transform _weaponCamera;
         [SerializeField] private Transform _levelRoot;
         [SerializeField] private Transform _groundCollider;
         [SerializeField] private NavMeshSurface _navmeshSurface;
@@ -30,6 +31,8 @@ namespace Game
 
         private void Start()
         {
+            Sfx.Instance.Play("LevelStart");
+
             _prefabs.Add(_globals.FloorColor, _globals.FloorPrefab);
             _prefabs.Add(_globals.PlayerColor, _globals.FloorPrefab);
             _prefabs.Add(_globals.WallColor, _globals.WallPrefab);
@@ -52,6 +55,7 @@ namespace Game
             LoadLevelFrom(_globals.Levels[_currentLevel]);
 
             _navmeshSurface.BuildNavMesh();
+
         }
 
         private void LoadLevelFrom(Texture2D levelTexture)
@@ -109,6 +113,7 @@ namespace Game
             _currentLevel++;
             PlayerPrefs.SetInt("kenney.currentLevel", _currentLevel);
 
+            Sfx.Instance.Play("LevelPass");
             string nextSceneName = _currentLevel == _globals.Levels.Length ? "End" : "Game";
             LevelEnd(nextSceneName);
         }

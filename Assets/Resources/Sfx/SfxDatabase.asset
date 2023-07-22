@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a91805fff024ba6bea0aec12f8bcf03, type: 3}
   m_Name: SfxDatabase
   m_EditorClassIdentifier: 
-  _clips: []
+  _clips:
+  - {fileID: 8300000, guid: b847aa956ce0f00469d5417b582cdb5e, type: 3}
+  - {fileID: 8300000, guid: cd0531cf7b513944eb36dd75019c4d07, type: 3}
+  - {fileID: 8300000, guid: 3c570c863ec7a9a47bbf5f7772a9931a, type: 3}
+  - {fileID: 8300000, guid: c26921c330e2afc499471363f89e0692, type: 3}
+  - {fileID: 8300000, guid: bb5b9f91744cf1740b76eb91493ed01d, type: 3}
+  - {fileID: 8300000, guid: 0f3f1ea8957cfa84aae820fb1bea66b2, type: 3}
+  - {fileID: 8300000, guid: d75707851513d9b4ebbd4d591cdc4839, type: 3}
+  - {fileID: 8300000, guid: ff0a141dd3c0f73408f2a950bc3adaa4, type: 3}
+  - {fileID: 8300000, guid: 9dde86a29ab534a42802252459012549, type: 3}
+  - {fileID: 8300000, guid: cf1b21ff6d0207f4ba30cd5ed02238f6, type: 3}
+  - {fileID: 8300000, guid: 0b458c7fe4f2e0a4eafa796935f46d0e, type: 3}
+  - {fileID: 8300000, guid: 2b4b1de3b382a7d4a822229e2c4992be, type: 3}

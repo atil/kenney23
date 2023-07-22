@@ -1315,6 +1315,7 @@ MonoBehaviour:
   _forceLevel: -1
   _player: {fileID: 1354250682}
   _playerCamera: {fileID: 588154558}
+  _weaponCamera: {fileID: 79045107}
   _levelRoot: {fileID: 891157000}
   _groundCollider: {fileID: 356971936}
   _navmeshSurface: {fileID: 1568164654}
@@ -1344,6 +1345,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5602861654778977998, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
+      propertyPath: _stepClips.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -5602861654778977998, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
+      propertyPath: _stepClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: cba820490a6af5c43ab8baec168d69d2, type: 3}
+    - target: {fileID: -5602861654778977998, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
+      propertyPath: _stepClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7716451f18b032047858c76cf2d19942, type: 3}
+    - target: {fileID: -5602861654778977998, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
+      propertyPath: _stepClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 251596789e3d9aa4ba96d85129a7cea9, type: 3}
+    - target: {fileID: -5602861654778977998, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
+      propertyPath: _stepClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3423db8b041c9b0499689634091e655a, type: 3}
+    - target: {fileID: -5602861654778977998, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
+      propertyPath: _stepClips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 21250d86c4a12d94e947535cdc4a5c4f, type: 3}
     - target: {fileID: 1742898383018988, guid: 680a11299af23874bbc0b94457026c5e, type: 3}
       propertyPath: m_Name
       value: Player

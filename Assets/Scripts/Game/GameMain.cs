@@ -49,6 +49,7 @@ namespace Game
             }
 
             _playerHealth = _globals.PlayerHealth;
+            StartPlayerAttack();
 
             _ui.SetHealth(_playerHealth, null);
 

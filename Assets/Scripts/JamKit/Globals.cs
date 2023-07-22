@@ -50,6 +50,7 @@ namespace JamKit
         public GameObject Enemy1Prefab;
         public Texture2D Enemy1Die0;
         public Texture2D Enemy1Die1;
+        public GameObject ArrowPrefab;
 
         [Space]
         public Color FloorColor = Color.white;

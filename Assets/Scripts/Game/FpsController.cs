@@ -182,7 +182,7 @@ namespace Game
             }
 
             // Reset player -- makes testing much easier
-            if (Input.GetKeyDown(KeyCode.R))
+            if (false && Input.GetKeyDown(KeyCode.R))
             {
                 Gravity.Set(Vector3.down);
                 _transform.position = new Vector3(0, 5, 0);

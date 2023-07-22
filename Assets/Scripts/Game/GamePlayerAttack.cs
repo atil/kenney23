@@ -1,26 +1,86 @@
 using JamKit;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
 {
     public partial class GameMain
     {
+        private enum WeaponType
+        {
+            Sword,
+            Crossbow
+        }
+
         [Header("Player Attack")]
         [SerializeField] private Transform _swordTransform;
         [SerializeField] private Transform _swordCharge;
         [SerializeField] private Transform _swordDown;
         [SerializeField] private SphereCollider _swordDamageZone;
+        [SerializeField] private Transform _crossbowTransform;
 
         private bool _isSwordAttacking = false;
         private Coroutine _attackCoroutine = null;
+        private WeaponType _currentWeapon = WeaponType.Sword;
+        private bool _isSwitchingWeapons = false;
+
+        private Dictionary<WeaponType, GameObject> _weaponGos = new();
+
+        private void StartPlayerAttack()
+        {
+            _weaponGos.Add(WeaponType.Sword, _swordTransform.gameObject);
+            _weaponGos.Add(WeaponType.Crossbow, _crossbowTransform.gameObject);
+        }
 
         private void UpdatePlayerAttack()
         {
-            if (!_isSwordAttacking && !IsPlayerDead && Input.GetMouseButtonDown(0))
+            if (IsPlayerDead) return;
+
+            switch (_currentWeapon)
             {
-                SwordAttack();
+                case WeaponType.Sword:
+                    if (!_isSwordAttacking && !_isSwitchingWeapons)
+                    {
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            SwordAttack();
+                        }
+                        else if (Input.GetMouseButtonDown(1))
+                        {
+                            CoroutineStarter.Run(ChangeWeapon(WeaponType.Sword, WeaponType.Crossbow));
+                        }
+                    }
+                    break;
+                case WeaponType.Crossbow:
+                    if (!_isSwitchingWeapons)
+                    {
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            CrossbowAttack();
+                        }
+                        else if (Input.GetMouseButtonDown(1))
+                        {
+                            CoroutineStarter.Run(ChangeWeapon(WeaponType.Crossbow, WeaponType.Sword));
+                        }
+                    }
+                    break;
             }
+        }
+
+        private IEnumerator ChangeWeapon(WeaponType from, WeaponType to)
+        {
+            _isSwitchingWeapons = true;
+            const float SwitchDuration = 0.6f;
+
+            _weaponGos[from].SetActive(false);
+
+            yield return new WaitForSeconds(SwitchDuration);
+            _weaponGos[to].SetActive(true);
+
+            _isSwitchingWeapons = false;
+            _currentWeapon = to;
+
         }
 
         private void SwordAttack()
@@ -67,6 +127,11 @@ namespace Game
                     OnEnemyHit(enemy);
                 }
             }
+
+        }
+
+        private void CrossbowAttack()
+        {
 
         }
 

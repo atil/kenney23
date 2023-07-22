@@ -20,13 +20,13 @@
 
 - Add player weapon: crossbow
 
+- Add ranged enemy
 - Level design
 - Find name
 - Story
-- Add ranged enemy
+- Fix dead enemies attacking bug
 - Enemy hit feedback: color change
-
-Nice-to-have:
+- Weapon feedback: bobbing
 - Map texture variety, 
 - Decorations/props, 
 - Enemy thought bubbles indicating their state

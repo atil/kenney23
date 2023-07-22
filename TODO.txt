@@ -12,15 +12,16 @@
 - Create enemy: prefab, states (sleep, move, charge, fire)
 - UI for health & dying
 - Add player weapon: sword
-- Camera tilt when the player receives damage
-
-- Add font
+- Camera tilt when the player receives damage & dies
+- Add font and arrange splash/end texts
 
 - SFX
-- Camera tilt when the player and dies
+
 - Add player weapon: crossbow
+- Level design
 - Find name
 - Story
+- Add ranged enemy
 
 Nice-to-have:
 - Map texture variety, 

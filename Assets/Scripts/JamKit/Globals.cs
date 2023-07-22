@@ -59,6 +59,7 @@ namespace JamKit
         [Space]
         public int PlayerHealth = 3;
         public float Enemy1Speed = 2.0f;
+        public float EnemyAttackRange = 1.0f;
 
         [Space]
         public Sprite HearthFull;

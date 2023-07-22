@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.AI.Navigation;
 
 namespace Game
 {
@@ -18,6 +19,7 @@ namespace Game
         [SerializeField] private Transform _player;
         [SerializeField] private Transform _levelRoot;
         [SerializeField] private Transform _groundCollider;
+        [SerializeField] private NavMeshSurface _navmeshSurface;
 
         private Dictionary<Color, GameObject> _prefabs = new();
 
@@ -38,6 +40,8 @@ namespace Game
             }
 
             LoadLevelFrom(_globals.Levels[_currentLevel]);
+
+            _navmeshSurface.BuildNavMesh();
         }
 
         private void LoadLevelFrom(Texture2D levelTexture)

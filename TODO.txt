@@ -1,13 +1,17 @@
+------- 1st day ----------
 - Create project, add jamkit, arrange web build
 - Read pixels and instantiate prefabs
 - Add player controller
 - Proper prefabs
 - Passing levels, reaching end screen
-------- 1st day ----------
+
+------- 2nd day ----------
 - Improve exit prefab looks
 - Screen fade colors
 - Create navmesh after instantiation. Hide it behind the loading screen
+
 - Create enemy: prefab, states (sleep, move, charge, fire)
+
 - UI for health
 - Add player weapon(s)
 - Add font

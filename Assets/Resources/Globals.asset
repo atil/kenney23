@@ -57,8 +57,35 @@ MonoBehaviour:
   PlayerColor: {r: 1, g: 1, b: 0, a: 1}
   ExitColor: {r: 1, g: 0, b: 1, a: 1}
   Enemy1Color: {r: 1, g: 0, b: 0, a: 1}
+  TweenTickDuration: 0.075
   PlayerHealth: 3
   Enemy1Speed: 2
+  Enemy1Health: 3
+  EnemyAttackRange: 1
+  EnemyGetDamagedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   HearthFull: {fileID: 21300000, guid: 914c4a1ef378bb047b610d246c59ec59, type: 3}
   HearthEmpty: {fileID: 21300000, guid: 454d79c7b54647044a45dfdef2233860, type: 3}
   UiDamageFeedbackPrefab: {fileID: 3539469542501381990, guid: 6d37a4f1abd42984691e80a0fa1dc84a, type: 3}

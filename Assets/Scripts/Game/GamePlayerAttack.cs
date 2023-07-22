@@ -1,3 +1,4 @@
+using JamKit;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.YamlDotNet.Serialization;
@@ -59,11 +60,9 @@ namespace Game
 
                 if (hit)
                 {
-                    Debug.Log("Hit!");
-                    enemy.Health--;
-                    if (enemy.Health <= 0)
+                    OnEnemyHit(enemy, out bool didKillEnemy);
+                    if (didKillEnemy)
                     {
-                        KillEnemy(enemy);
                         killedEnemies.Add(enemy);
                     }
                 }
@@ -75,14 +74,54 @@ namespace Game
             }
         }
 
+        private void OnEnemyHit(Enemy enemy, out bool didKillEnemy)
+        {
+            //enemy.Health--;
+
+            if (enemy.Health <= 0) // pwned
+            {
+                KillEnemy(enemy);
+                didKillEnemy = true;
+            }
+            else // hit
+            {
+                // Interrupt enemy
+                if (enemy.State == EnemyState.AttackCharge)
+                {
+                    CoroutineStarter.Stop(enemy.AttackCoroutine);
+
+                    enemy.State = EnemyState.Move;
+                    enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
+                }
+
+                PlayEnemyHitFX(enemy);
+                didKillEnemy = false;
+            }
+        }
+
+        private void PlayEnemyHitFX(Enemy enemy)
+        {
+            Vector3 originalScale = enemy.VisualTransform.localScale;
+            Vector3 smallScale = originalScale.WithY(originalScale.y * 0.3f);
+            enemy.VisualTransform.localScale = smallScale;
+            enemy.GetDamagedCoroutine = Curve.TweenDiscrete(_globals.EnemyGetDamagedCurve, 0.3f, _globals.TweenTickDuration,
+                t =>
+                {
+                    enemy.VisualTransform.localScale = Vector3.Lerp(smallScale, originalScale, t);
+                },
+                () =>
+                {
+                    enemy.VisualTransform.localScale = originalScale;
+                    enemy.GetDamagedCoroutine = null;
+                });
+        }
+
         private void KillEnemy(Enemy enemy)
         {
             if (enemy.AttackCoroutine != null)
             {
                 CoroutineStarter.Stop(enemy.AttackCoroutine);
             }
-
-            // TODO: FX
 
             Destroy(enemy.Go);
         }

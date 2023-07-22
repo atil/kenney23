@@ -11,14 +11,17 @@
 - Create navmesh after instantiation. Hide it behind the loading screen
 - Create enemy: prefab, states (sleep, move, charge, fire)
 - UI for health & dying
-
-- Add player weapon(s)
+- Add player weapon: sword
 
 - Add font
+
 - SFX
-- Camera tilt when the player receives damage
+- Camera tilt when the player receives damage (and dies)
+- Add player weapon: crossbow
 - Find name
 - Story
+
+Nice-to-have:
 - Map texture variety, 
 - Decorations/props, 
 - Enemy thought bubbles indicating their state

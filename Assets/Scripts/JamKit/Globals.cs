@@ -57,10 +57,12 @@ namespace JamKit
         public Color Enemy1Color = new(1, 0, 0, 1);
 
         [Space]
+        public float TweenTickDuration = 0.075f;
         public int PlayerHealth = 3;
         public float Enemy1Speed = 2.0f;
         public int Enemy1Health = 3;
         public float EnemyAttackRange = 1.0f;
+        public AnimationCurve EnemyGetDamagedCurve;
 
         [Space]
         public Sprite HearthFull;

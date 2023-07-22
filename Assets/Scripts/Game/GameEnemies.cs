@@ -36,6 +36,9 @@ namespace Game
             public Transform ChargeTargetTransform;
 
             public Coroutine AttackCoroutine;
+            public Coroutine GetDamagedCoroutine;
+            public Vector3 AttackStartPos;
+            public Quaternion AttackStartRot;
 
             public Vector3 Pos
             {
@@ -132,32 +135,32 @@ namespace Game
                     Vector3 deltaMove = dir * (enemy.MoveSpeed * Time.deltaTime);
                     enemy.Pos += deltaMove;
 
-                    if (Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < _globals.EnemyAttackRange)
+                    bool inRange = Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < _globals.EnemyAttackRange;
+                    if (inRange && enemy.GetDamagedCoroutine == null)
                     {
                         enemy.State = EnemyState.AttackCharge;
 
                         // Initiate charge
                         const float ChargeDuration = 0.5f;
-                        Vector3 srcPos = enemy.ChargeSourceTransform.localPosition;
-                        Quaternion srcRot = enemy.ChargeSourceTransform.localRotation;
+                        enemy.AttackStartPos = enemy.ChargeSourceTransform.localPosition;
+                        enemy.AttackStartRot = enemy.ChargeSourceTransform.localRotation;
 
                         Vector3 targetPos = enemy.ChargeTargetTransform.localPosition;
                         Quaternion targetRot = enemy.ChargeTargetTransform.localRotation;
 
-                        const float EnemyAttackTickDuration = 0.1f;
-                        enemy.AttackCoroutine = Curve.TweenDiscrete(AnimationCurve.EaseInOut(0f, 0f, 1f, 1f), ChargeDuration, EnemyAttackTickDuration,
+                        enemy.AttackCoroutine = Curve.TweenDiscrete(AnimationCurve.EaseInOut(0f, 0f, 1f, 1f), ChargeDuration, _globals.TweenTickDuration,
                             t =>
                             {
-                                enemy.VisualTransform.SetLocalPositionAndRotation(Vector3.Lerp(srcPos, targetPos, t), Quaternion.Slerp(srcRot, targetRot, t));
+                                enemy.VisualTransform.SetLocalPositionAndRotation(Vector3.Lerp(enemy.AttackStartPos, targetPos, t), Quaternion.Slerp(enemy.AttackStartRot, targetRot, t));
                             },
                             () =>
                             {
-                                OnEnemyAttack(enemy, srcPos, srcRot);
+                                OnEnemyAttack(enemy);
+                                enemy.AttackCoroutine = null;
                             });
                     }
                     break;
                 case EnemyState.AttackCharge:
-                    // Interruption?
                     break;
                 case EnemyState.Attack:
                     break;
@@ -168,12 +171,12 @@ namespace Game
             }
         }
 
-        private void OnEnemyAttack(Enemy enemy, Vector3 srcPos, Quaternion srcRot)
+        private void OnEnemyAttack(Enemy enemy)
         {
             if (IsPlayerDead) // Player died while this enemy swings
             {
                 enemy.State = EnemyState.Sleep;
-                enemy.VisualTransform.SetLocalPositionAndRotation(srcPos, srcRot);
+                enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
                 return;
             }
 
@@ -188,10 +191,10 @@ namespace Game
                     _ui.ShowDamage();
                     _ui.SetHealth(_playerHealth, null);
                 }
-                else // ded
+                else // me ded
                 {
                     enemy.State = EnemyState.Sleep;
-                    enemy.VisualTransform.SetLocalPositionAndRotation(srcPos, srcRot);
+                    enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
 
                     const float delay = 2f;
                     _ui.ShowDead(delay);
@@ -210,7 +213,7 @@ namespace Game
                 }
             }
 
-            enemy.VisualTransform.SetLocalPositionAndRotation(srcPos, srcRot);
+            enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
             CoroutineStarter.RunDelayed(1.0f, () =>
             {
                 enemy.State = EnemyState.Move;

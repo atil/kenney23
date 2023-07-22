@@ -9,10 +9,10 @@
 - Improve exit prefab looks
 - Screen fade colors
 - Create navmesh after instantiation. Hide it behind the loading screen
-
 - Create enemy: prefab, states (sleep, move, charge, fire)
 
 - UI for health
+
 - Add player weapon(s)
 - Add font
 - SFX

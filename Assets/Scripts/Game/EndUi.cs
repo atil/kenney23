@@ -12,6 +12,8 @@ namespace Game
         void Start()
         {
             Camera.backgroundColor = Globals.EndSceneCameraBackgroundColor;
+            PlayerPrefs.SetInt("kenney.currentLevel", 0);
+
             FadeIn();
         }
 

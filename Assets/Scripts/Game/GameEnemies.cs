@@ -15,30 +15,63 @@ namespace Game
             Attack,
         }
 
+        private enum EnemyType
+        {
+            Enemy1,
+        }
+
         private class Enemy
         {
+            public EnemyType Type;
+            public float MoveSpeed;
             public GameObject Go;
             public EnemyState State;
             public NavMeshPath WalkPath;
+            public Transform RootTransform;
+            public Transform VisualTransform;
+            public Transform ChargeSourceTransform;
+            public Transform ChargeTargetTransform;
+
+            public Vector3 Pos
+            {
+                get => Go.transform.position;
+                set => Go.transform.position = value;
+            }
         }
 
         [Header("Enemies")]
         [SerializeField] private Transform _enemiesRoot;
-        [SerializeField] private float _enemyMoveSpeed = 1.0f;
 
         private List<Enemy> _enemies = new();
 
-        private RaycastHit[] _raycastResults = new RaycastHit[20];
+        private const int MaxRayCastResults = 20;
+        private RaycastHit[] _raycastResults = new RaycastHit[MaxRayCastResults];
 
-        private void AddEnemy(Color enemyType, Vector3 tilePos)
+        private void AddEnemy(Color enemyTypeColor, Vector3 tilePos)
         {
-            GameObject enemyGo = Instantiate(_globals.Enemy1Prefab, _enemiesRoot);
+            EnemyType type = EnemyType.Enemy1;
+            GameObject enemyPrefab = _globals.Enemy1Prefab;
+            float moveSpeed = _globals.Enemy1Speed;
+            if (enemyTypeColor == _globals.Enemy1Color)
+            {
+                type = EnemyType.Enemy1;
+                enemyPrefab = _globals.Enemy1Prefab;
+                moveSpeed = _globals.Enemy1Speed;
+            }
+
+            GameObject enemyGo = Instantiate(enemyPrefab, _enemiesRoot);
             enemyGo.transform.position = tilePos;
             _enemies.Add(new Enemy
             {
+                Type = type,
+                MoveSpeed = moveSpeed,
                 Go = enemyGo,
                 State = EnemyState.Sleep,
                 WalkPath = new(),
+                RootTransform = enemyGo.transform.Find("Root"),
+                VisualTransform = enemyGo.transform.Find("Root").Find("Renderer"),
+                ChargeSourceTransform = enemyGo.transform.Find("Root").Find("ChargeSourceTransform"),
+                ChargeTargetTransform = enemyGo.transform.Find("Root").Find("ChargeTargetTransform"),
             });
         }
 
@@ -46,15 +79,14 @@ namespace Game
         {
             foreach (Enemy enemy in _enemies)
             {
-                Transform enemyVisual = enemy.Go.transform.Find("Visual");
-                enemyVisual.forward = _player.forward;
+                enemy.RootTransform.forward = _player.forward;
 
                 switch (enemy.State)
                 {
                     case EnemyState.Sleep:
 
-                        Vector3 toPlayer = _player.transform.position - enemy.Go.transform.position;
-                        Ray ray = new(enemy.Go.transform.position, toPlayer.normalized);
+                        Vector3 toPlayer = _player.transform.position - enemy.Pos;
+                        Ray ray = new(enemy.Pos, toPlayer.normalized);
                         int hitAmount = Physics.RaycastNonAlloc(ray, _raycastResults, toPlayer.magnitude);
                         bool hasWall = false;
                         for (int i = 0; i < hitAmount; i++)
@@ -74,7 +106,7 @@ namespace Game
 
                         break;
                     case EnemyState.Move:
-                        Vector3 source = enemy.Go.transform.position.WithY(0.01f);
+                        Vector3 source = enemy.Pos.WithY(0.01f);
                         Vector3 target = _player.position.WithY(0.01f);
                         bool succ = NavMesh.CalculatePath(source, target, NavMesh.AllAreas, enemy.WalkPath);
                         Debug.Assert(succ, $"There should always be path src: {source} target: {target}");
@@ -83,16 +115,50 @@ namespace Game
                         DrawPath(corners);
                         Debug.Assert(corners.Length >= 2, $"It should be at least a straight line src: {source} target: {target}");
 
-                        Vector3 dir = (corners[1] - enemy.Go.transform.position).normalized;
-                        Vector3 deltaMove = dir * (_enemyMoveSpeed * Time.deltaTime);
-                        enemy.Go.transform.position += deltaMove;
+                        Vector3 dir = (corners[1] - enemy.Pos).normalized;
+                        Vector3 deltaMove = dir * (enemy.MoveSpeed * Time.deltaTime);
+                        enemy.Pos += deltaMove;
 
+                        const float AttackRange = 1.0f;
+                        if (Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < AttackRange)
+                        {
+                            enemy.State = EnemyState.AttackCharge;
+
+                            // Initiate charge
+                            const float ChargeDuration = 1.0f;
+                            Vector3 srcPos = enemy.ChargeSourceTransform.localPosition;
+                            Quaternion srcRot = enemy.ChargeSourceTransform.localRotation;
+
+                            Vector3 targetPos = enemy.ChargeTargetTransform.localPosition;
+                            Quaternion targetRot = enemy.ChargeTargetTransform.localRotation;
+
+                            Debug.Log("Charging");
+                            Curve.Tween(AnimationCurve.EaseInOut(0f, 0f, 1f, 1f), ChargeDuration,
+                                t =>
+                                {
+                                    enemy.VisualTransform.SetLocalPositionAndRotation(Vector3.Lerp(srcPos, targetPos, t), Quaternion.Slerp(srcRot, targetRot, t));
+                                },
+                                () =>
+                                {
+                                    enemy.State = EnemyState.Attack;
+                                    Debug.Log("Attack!");
+
+                                    enemy.VisualTransform.SetLocalPositionAndRotation(srcPos, srcRot);
+                                    CoroutineStarter.RunDelayed(1.0f, () =>
+                                    {
+                                        enemy.State = EnemyState.Move;
+                                    });
+                                });
+                        }
                         break;
                     case EnemyState.AttackCharge:
+                        // Interruption?
                         break;
                     case EnemyState.Attack:
                         break;
                     default:
+                        Debug.LogError($"Unrecognized state: {enemy.State}. Switching to move");
+                        enemy.State = EnemyState.Move;
                         break;
                 }
             }

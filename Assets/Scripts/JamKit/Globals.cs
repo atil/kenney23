@@ -49,10 +49,14 @@ namespace JamKit
         public GameObject ExitPrefab;
         public GameObject Enemy1Prefab;
 
+        [Space]
         public Color FloorColor = Color.white;
         public Color WallColor = Color.black;
         public Color PlayerColor = new(1, 1, 0, 1);
         public Color ExitColor = new(1, 0, 1, 1);
         public Color Enemy1Color = new(1, 0, 0, 1);
+
+        [Space]
+        public float Enemy1Speed = 2.0f;
     }
 }

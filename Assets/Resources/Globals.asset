@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _discreteTickInteval: 0.2
   _sceneTransitionParams:
-    _Color: {r: 0.45882353, g: 0.2627451, b: 0.2901961, a: 1}
+    _Color: {r: 0.47843137, g: 0.26666668, b: 0.2901961, a: 1}
     _Duration: 1
     _Curve:
       serializedVersion: 2
@@ -41,9 +41,9 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     _IsDiscrete: 1
-  _splashSceneCameraBackgroundColor: {r: 0.45882353, g: 0.2627451, b: 0.2901961, a: 1}
+  _splashSceneCameraBackgroundColor: {r: 0.47843137, g: 0.26666668, b: 0.2901961, a: 1}
   _endSceneCameraBackgroundColor: {r: 0.45882353, g: 0.2627451, b: 0.2901961, a: 1}
-  _buildSplashBackgroundColor: {r: 0.45882353, g: 0.2627451, b: 0.2901961, a: 1}
+  _buildSplashBackgroundColor: {r: 0.47843137, g: 0.26666668, b: 0.2901961, a: 1}
   Levels:
   - {fileID: 2800000, guid: b9388468e17c0354e82424cf0f0bd9b2, type: 3}
   - {fileID: 2800000, guid: dc99a30891595744495f3e453bafc358, type: 3}

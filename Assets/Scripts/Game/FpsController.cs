@@ -92,7 +92,7 @@ namespace Game
 
         // Vertical look
         //private float _pitch = 0; // We keep track of this value since we want to clamp it
-        private const float Sensitivity = 150;
+        private float Sensitivity = 150;
 
         // Caching...
         private readonly Collider[] _overlappingColliders = new Collider[20]; // Hope no more is needed
@@ -179,6 +179,17 @@ namespace Game
                 //_pitch = Mathf.Clamp(_pitch, -89, 89);
                 //_camTransform.localRotation = Quaternion.Euler(Vector3.right * _pitch);
                 _transform.rotation *= Quaternion.Euler(Input.GetAxis("Mouse X") * Sensitivity * dt * Vector3.up);
+            }
+
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                Sensitivity -= 30;
+                Sensitivity = Mathf.Clamp(Sensitivity, 10, 300);
+            }
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                Sensitivity += 30;
+                Sensitivity = Mathf.Clamp(Sensitivity, 10, 300);
             }
 
             // Reset player -- makes testing much easier

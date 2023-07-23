@@ -30,12 +30,15 @@
 - Replace UI buttons
 - Find name
 - Bug: sometimes enemies attack the player directly from level start
-
 - Update store page
+- Sensitivity
 
-- Enemy hit feedback: color change
-- Weapon feedback: bobbing
+- Submit to jam
+
 - Map texture variety
+- Enemy hit feedback: color change
+- Music
+- Weapon feedback: bobbing
 - Decorations/props
 - Enemy thought bubbles indicating their state
 - Add dog and pet it

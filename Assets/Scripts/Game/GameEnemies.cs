@@ -143,7 +143,9 @@ namespace Game
                 }
             }
 
-            return !hasWall;
+            bool howDoesThisEvenHappen = Time.timeSinceLevelLoad > 1.0f;
+
+            return !hasWall && howDoesThisEvenHappen;
         }
 
         private void UpdateEnemy(Enemy enemy)
@@ -156,7 +158,7 @@ namespace Game
                     if (CanSeePlayer(enemy) && !IsPlayerDead) // Awakened!
                     {
                         string sfxName = enemy.Type == EnemyType.Enemy1 ? "Enemy1Awake" : "Enemy2Awake";
-                        CoroutineStarter.RunDelayed(Random.Range(0.0f, 0.2f), () =>
+                        CoroutineStarter.RunDelayed(Random.Range(0.0f, 0.5f), () =>
                         {
                             Sfx.Instance.PlayRandom(sfxName);
                         });
@@ -276,6 +278,12 @@ namespace Game
 
         private void OnPlayerHit(out bool didPlayerDie)
         {
+            if (IsPlayerDead)
+            {
+                didPlayerDie = true;
+                return;
+            }
+
             _playerHealth--;
 
             if (_playerHealth > 0) // ow!

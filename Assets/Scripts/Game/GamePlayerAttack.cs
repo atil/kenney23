@@ -187,6 +187,8 @@ namespace Game
             Transform arrowTransform = Instantiate(_globals.ArrowPrefab, _arrowsRoot).transform;
             arrowTransform.SetPositionAndRotation(_arrowSpawnSlot.position, _arrowSpawnSlot.rotation);
             _arrows.Add(arrowTransform);
+
+            Sfx.Instance.Play("ArrowLaunch");
         }
 
         private void UpdateArrow(Transform arrowTransform, out bool isDestroyed)
@@ -200,7 +202,7 @@ namespace Game
             {
                 if (hitCollider.gameObject.layer == LayerMask.NameToLayer("EnemyCollider"))
                 {
-                    Enemy hitEnemy = _enemies.Find(x => x.Collider = hitCollider);
+                    Enemy hitEnemy = _enemies.Find(x => x.Collider == hitCollider);
                     Debug.Assert(hitEnemy != null);
 
                     OnEnemyHit(hitEnemy, _globals.ArrowDamage);
@@ -221,8 +223,6 @@ namespace Game
         {
             enemy.Health -= damage;
 
-            Sfx.Instance.PlayRandom("EnemyHit");
-
             // Interrupt enemy
             if (enemy.State == EnemyState.AttackCharge)
             {
@@ -233,10 +233,12 @@ namespace Game
 
             if (enemy.Health <= 0) // pwned
             {
+                Sfx.Instance.Play("EnemyDie");
                 CoroutineStarter.Run(KillEnemyCoroutine(enemy));
             }
             else // hit
             {
+                Sfx.Instance.PlayRandom("EnemyHit");
                 PlayEnemyHitFX(enemy);
             }
         }

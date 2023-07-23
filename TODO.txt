@@ -25,10 +25,10 @@
 - Make level textures a little more readable
 - Level design: with melee enemy
 - Prevent exit if there are enemies alive
-
 - SFX: enemy killed, enemy swing, fireball, crossbow fire, arrow wall hit, level end warning
 
 - Level design: with ranged enemy
+
 - Find name
 - Story
 - Update store page

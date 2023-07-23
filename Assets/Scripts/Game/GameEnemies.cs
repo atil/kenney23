@@ -157,7 +157,10 @@ namespace Game
                     if (CanSeePlayer(enemy) && !IsPlayerDead) // Awakened!
                     {
                         string sfxName = enemy.Type == EnemyType.Enemy1 ? "Enemy1Awake" : "Enemy2Awake";
-                        Sfx.Instance.PlayRandom(sfxName);
+                        CoroutineStarter.RunDelayed(Random.Range(0.0f, 0.2f), () =>
+                        {
+                            Sfx.Instance.PlayRandom(sfxName);
+                        });
                         enemy.State = EnemyState.Move;
                     }
 
@@ -232,7 +235,8 @@ namespace Game
 
             if (enemy.Type == EnemyType.Enemy1)
             {
-                if (Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < _globals.EnemyMeleeAttackRange) // Still in the attack range
+                bool isInRange = Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < _globals.EnemyMeleeAttackRange;
+                if (isInRange) // Still in the attack range
                 {
                     OnPlayerHit(out bool didPlayerDie);
                     if (didPlayerDie)
@@ -242,6 +246,11 @@ namespace Game
                         return;
                     }
                 }
+                else
+                {
+                    Sfx.Instance.Play("Enemy1Swing");
+                }
+
             }
             else if (enemy.Type == EnemyType.Enemy2)
             {
@@ -253,6 +262,8 @@ namespace Game
                 fireballGo.transform.position = enemy.Pos.WithY(0.4f);
 
                 _fireballs.Add(fireballGo);
+
+                Sfx.Instance.Play("FireballLaunch");
             }
 
             enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
@@ -266,7 +277,7 @@ namespace Game
 
         private void OnPlayerHit(out bool didPlayerDie)
         {
-            _playerHealth--;
+            //_playerHealth--;
 
             if (_playerHealth > 0) // ow!
             {
@@ -353,6 +364,7 @@ namespace Game
 
                 if (hitCollider.gameObject.CompareTag("Wall"))
                 {
+                    //Sfx.Instance.PlayRandom("FireballWallHit");
                     isDestroyed = true;
                     break;
                 }

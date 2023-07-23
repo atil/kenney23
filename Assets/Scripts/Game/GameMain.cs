@@ -38,6 +38,7 @@ namespace Game
             _prefabs.Add(_globals.Enemy1Color, _globals.FloorPrefab);
             _prefabs.Add(_globals.Enemy2Color, _globals.FloorPrefab);
 
+#if UNITY_EDITOR
             if (_forceLevel == -1)
             {
                 _currentLevel = PlayerPrefs.GetInt("kenney.currentLevel", 0);
@@ -46,6 +47,9 @@ namespace Game
             {
                 _currentLevel = _forceLevel;
             }
+#else
+            _currentLevel = PlayerPrefs.GetInt("kenney.currentLevel", 0);
+#endif
 
             _playerHealth = _globals.PlayerHealth;
             StartPlayerAttack();
@@ -94,10 +98,30 @@ namespace Game
                             AddEnemy(tilePos, EnemyType.Enemy2);
                         }
 
-                        bool isBorder = (i == 0 || i == w - 1 || j == 0 || j == h - 1);
-                        if (prefab == _globals.WallPrefab && isBorder)
+                        if (prefab == _globals.WallPrefab)
                         {
-                            prefab = _globals.BorderPrefab;
+                            bool isBorder = (i == 0 || i == w - 1 || j == 0 || j == h - 1);
+                            if (isBorder)
+                            {
+                                prefab = _globals.BorderPrefab;
+                            }
+                            else
+                            {
+                                float rand = UnityEngine.Random.value;
+                                if (rand < 0.15f)
+                                {
+                                    prefab = _globals.Wall2Prefab;
+                                }
+                                else if (rand < 0.3f)
+                                {
+                                    prefab = _globals.Wall3Prefab;
+                                }
+                            }
+                        }
+
+                        if (prefab == _globals.FloorPrefab && UnityEngine.Random.value < 0.15f)
+                        {
+                            prefab = _globals.Floor2Prefab;
                         }
 
                         GameObject tileGo = Instantiate(prefab, _levelRoot);

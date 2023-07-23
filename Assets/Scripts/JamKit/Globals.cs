@@ -44,7 +44,10 @@ namespace JamKit
         [Header("KENNEY!")]
         public Texture2D[] Levels;
         public GameObject FloorPrefab;
+        public GameObject Floor2Prefab;
         public GameObject WallPrefab;
+        public GameObject Wall2Prefab;
+        public GameObject Wall3Prefab;
         public GameObject BorderPrefab;
         public GameObject ExitPrefab;
         public GameObject Enemy1Prefab;

@@ -1917,7 +1917,7 @@ MonoBehaviour:
   _fireballsRoot: {fileID: 0}
   _globals: {fileID: 11400000, guid: b27ece0341ed8b14ea3b992f273fbb00, type: 2}
   _ui: {fileID: 1470214248}
-  _forceLevel: 12
+  _forceLevel: -1
   _player: {fileID: 1354250682}
   _playerCamera: {fileID: 588154558}
   _weaponCamera: {fileID: 79045107}

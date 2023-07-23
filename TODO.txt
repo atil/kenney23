@@ -32,11 +32,11 @@
 - Bug: sometimes enemies attack the player directly from level start
 - Update store page
 - Sensitivity
-
 - Submit to jam
-
 - Map texture variety
+
 - Enemy hit feedback: color change
+
 - Music
 - Weapon feedback: bobbing
 - Decorations/props

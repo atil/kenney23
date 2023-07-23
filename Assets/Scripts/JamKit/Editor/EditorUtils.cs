@@ -45,7 +45,7 @@ namespace JamKit
                 return;
             }
 
-            const string projectName = "kenney23"; // Set this when you open a project in itch
+            const string projectName = "dungeons-of-kenney"; // Set this when you open a project in itch
             // Also make sure that "data caching" is off and "compression format" is gzip in publishing settings
 
             Globals globals = Resources.Load<Globals>("Globals");

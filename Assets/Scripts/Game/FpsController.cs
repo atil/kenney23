@@ -91,7 +91,7 @@ namespace Game
         private Vector3 _moveInput;
 
         // Vertical look
-        private float _pitch = 0; // We keep track of this value since we want to clamp it
+        //private float _pitch = 0; // We keep track of this value since we want to clamp it
         private const float Sensitivity = 150;
 
         // Caching...

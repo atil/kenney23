@@ -19,15 +19,20 @@
 - Enemy die animation
 - Add player weapon: crossbow
 
+------- 3rd day ----------
+- Fix dead enemies attacking bug
 - Add ranged enemy
 
 - Make level textures a little more readable
+
 - Level design
 - Find name
 - Story
-- Fix dead enemies attacking bug
+- Update store page
+
 - Enemy hit feedback: color change
 - Weapon feedback: bobbing
 - Map texture variety, 
 - Decorations/props, 
 - Enemy thought bubbles indicating their state
+- Add dog and pet it

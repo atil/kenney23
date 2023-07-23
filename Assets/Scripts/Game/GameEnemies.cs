@@ -19,6 +19,7 @@ namespace Game
         private enum EnemyType
         {
             Enemy1,
+            Enemy2,
         }
 
         private class Enemy
@@ -36,8 +37,9 @@ namespace Game
             public Transform ChargeSourceTransform;
             public Transform ChargeTargetTransform;
 
-            public Coroutine AttackCoroutine;
+            public Coroutine AttackChargeCoroutine;
             public Coroutine GetDamagedCoroutine;
+            public Coroutine PostAttackWaitCoroutine;
             public Vector3 AttackStartPos;
             public Quaternion AttackStartRot;
 
@@ -50,22 +52,32 @@ namespace Game
 
         [Header("Enemies")]
         [SerializeField] private Transform _enemiesRoot;
+        [SerializeField] private Transform _fireballsRoot;
 
         private List<Enemy> _enemies = new();
+        private List<GameObject> _fireballs = new();
 
         private const int MaxRayCastResults = 20;
         private RaycastHit[] _raycastResults = new RaycastHit[MaxRayCastResults];
 
-        private void AddEnemy(Color enemyTypeColor, Vector3 tilePos)
+        private Coroutine _playerDamagedCameraFxCoroutine = null;
+
+        private void AddEnemy(Vector3 tilePos, EnemyType type)
         {
-            EnemyType type = EnemyType.Enemy1;
             GameObject enemyPrefab = _globals.Enemy1Prefab;
             float moveSpeed = _globals.Enemy1Speed;
-            if (enemyTypeColor == _globals.Enemy1Color)
+            int health = _globals.Enemy1Health;
+            if (type == EnemyType.Enemy1)
             {
-                type = EnemyType.Enemy1;
                 enemyPrefab = _globals.Enemy1Prefab;
                 moveSpeed = _globals.Enemy1Speed;
+                health = _globals.Enemy1Health;
+            }
+            else if (type == EnemyType.Enemy2)
+            {
+                enemyPrefab = _globals.Enemy2Prefab;
+                moveSpeed = _globals.Enemy2Speed;
+                health = _globals.Enemy2Health;
             }
 
             GameObject enemyGo = Instantiate(enemyPrefab, _enemiesRoot);
@@ -76,7 +88,7 @@ namespace Game
                 MoveSpeed = moveSpeed,
                 Go = enemyGo,
                 Collider = enemyGo.transform.Find("Collision").GetComponent<Collider>(),
-                Health = _globals.Enemy1Health,
+                Health = health,
                 State = EnemyState.Sleep,
                 WalkPath = new(),
                 RootTransform = enemyGo.transform.Find("Root"),
@@ -91,6 +103,18 @@ namespace Game
             foreach (Enemy enemy in _enemies)
             {
                 UpdateEnemy(enemy);
+            }
+
+            List<GameObject> destroyedFireballs = new();
+            foreach (GameObject fireball in _fireballs)
+            {
+                UpdateFireball(fireball, out bool isDestroyed);
+                if (isDestroyed) destroyedFireballs.Add(fireball);
+            }
+            foreach (GameObject destroyedFireball in destroyedFireballs)
+            {
+                _fireballs.Remove(destroyedFireball);
+                Destroy(destroyedFireball);
             }
         }
 
@@ -115,10 +139,10 @@ namespace Game
                         }
                     }
 
-                    if (!hasWall && !IsPlayerDead)
+                    if (!hasWall && !IsPlayerDead) // Awakened!
                     {
-                        // Awakened!
-                        Sfx.Instance.PlayRandom("Enemy1Awake");
+                        string sfxName = enemy.Type == EnemyType.Enemy1 ? "Enemy1Awake" : "Enemy2Awake";
+                        Sfx.Instance.PlayRandom(sfxName);
                         enemy.State = EnemyState.Move;
                     }
 
@@ -137,7 +161,8 @@ namespace Game
                     Vector3 deltaMove = dir * (enemy.MoveSpeed * Time.deltaTime);
                     enemy.Pos += deltaMove;
 
-                    bool inRange = Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < _globals.EnemyAttackRange;
+                    float range = enemy.Type == EnemyType.Enemy1 ? _globals.EnemyMeleeAttackRange : _globals.EnemyRangedAttackRange;
+                    bool inRange = Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < range;
                     if (inRange && enemy.GetDamagedCoroutine == null)
                     {
                         enemy.State = EnemyState.AttackCharge;
@@ -150,7 +175,7 @@ namespace Game
                         Vector3 targetPos = enemy.ChargeTargetTransform.localPosition;
                         Quaternion targetRot = enemy.ChargeTargetTransform.localRotation;
 
-                        enemy.AttackCoroutine = Curve.TweenDiscrete(AnimationCurve.EaseInOut(0f, 0f, 1f, 1f), ChargeDuration, _globals.TweenTickDuration,
+                        enemy.AttackChargeCoroutine = Curve.TweenDiscrete(AnimationCurve.EaseInOut(0f, 0f, 1f, 1f), ChargeDuration, _globals.TweenTickDuration,
                             t =>
                             {
                                 enemy.VisualTransform.SetLocalPositionAndRotation(Vector3.Lerp(enemy.AttackStartPos, targetPos, t), Quaternion.Slerp(enemy.AttackStartRot, targetRot, t));
@@ -158,7 +183,7 @@ namespace Game
                             () =>
                             {
                                 OnEnemyAttack(enemy);
-                                enemy.AttackCoroutine = null;
+                                enemy.AttackChargeCoroutine = null;
                             });
                     }
                     break;
@@ -186,66 +211,134 @@ namespace Game
 
             enemy.State = EnemyState.Attack;
 
-            if (Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < _globals.EnemyAttackRange) // Still in the attack range
+            if (enemy.Type == EnemyType.Enemy1)
             {
-                _playerHealth--;
-
-                if (_playerHealth > 0) // ow!
+                if (Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < _globals.EnemyMeleeAttackRange) // Still in the attack range
                 {
-                    Sfx.Instance.PlayRandom("PlayerHurt");
-                    _ui.ShowDamage();
-                    _ui.SetHealth(_playerHealth, null);
-
-                    _playerCamera.Rotate(new(0, 0, 10), Space.Self);
-                    CoroutineStarter.RunDelayed(0.3f, () =>
+                    OnPlayerHit(out bool didPlayerDie);
+                    if (didPlayerDie)
                     {
-                        _playerCamera.Rotate(new(0, 0, -10), Space.Self);
-                    });
-                }
-                else // me ded
-                {
-                    enemy.State = EnemyState.Sleep;
-                    enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
-
-                    const float delay = 2f;
-                    _ui.ShowDead(delay);
-                    _player.GetComponent<FpsController>().CanControl = false;
-                    if (_attackCoroutine != null)
-                    {
-                        CoroutineStarter.Stop(_attackCoroutine);
+                        enemy.State = EnemyState.Sleep;
+                        enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
+                        return;
                     }
-
-                    // Sinking FX
-                    _playerCamera.Rotate(new(0, 0, 10), Space.Self);
-                    _weaponCamera.gameObject.SetActive(false);
-                    Vector3 startPos = _playerCamera.localPosition;
-                    Vector3 endPos = startPos - new Vector3(0, 0.3f, 0);
-                    Coroutine cameraDeadSinkCoroutine = Curve.Tween(AnimationCurve.Linear(0, 0, 1, 1), delay * 0.5f,
-                        t =>
-                        {
-                            _playerCamera.localPosition = Vector3.Lerp(startPos, endPos, t);
-                        },
-                        () =>
-                        {
-                            cameraDeadSinkCoroutine = null;
-                        });
-
-                    Sfx.Instance.Play("PlayerDie");
-
-                    CoroutineStarter.RunDelayed(delay, () =>
-                    {
-                        LevelEnd("Game");
-                    });
-
-                    return;
                 }
+            }
+            else if (enemy.Type == EnemyType.Enemy2)
+            {
+                // Shoot fireball
+                GameObject fireballGo = Instantiate(_globals.FireballPrefab, _fireballsRoot);
+
+                Vector3 toPlayerDir = (_player.position.ToHorizontal() - enemy.Pos.ToHorizontal()).normalized;
+                fireballGo.transform.forward = -toPlayerDir;
+                fireballGo.transform.position = enemy.Pos.WithY(0.4f);
+
+                _fireballs.Add(fireballGo);
             }
 
             enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
-            CoroutineStarter.RunDelayed(1.0f, () =>
+            const float PostAttackWaitDuration = 1.0f;
+            enemy.PostAttackWaitCoroutine = CoroutineStarter.RunDelayed(PostAttackWaitDuration, () =>
             {
                 enemy.State = EnemyState.Move;
+                enemy.PostAttackWaitCoroutine = null;
             });
         }
+
+        private void OnPlayerHit(out bool didPlayerDie)
+        {
+            _playerHealth--;
+
+            if (_playerHealth > 0) // ow!
+            {
+                Sfx.Instance.PlayRandom("PlayerHurt");
+                _ui.ShowDamage();
+                _ui.SetHealth(_playerHealth, null);
+
+                CoroutineStarter.Stop(_playerDamagedCameraFxCoroutine);
+
+                _playerCamera.localRotation = Quaternion.Euler(0, 0, 10);
+                _playerDamagedCameraFxCoroutine = CoroutineStarter.RunDelayed(0.3f, () =>
+                {
+                    _playerCamera.localRotation = Quaternion.Euler(0, 0, 0);
+                    _playerDamagedCameraFxCoroutine = null;
+                });
+
+                didPlayerDie = false;
+            }
+            else // me ded
+            {
+                const float delay = 2f;
+                _ui.ShowDead(delay);
+                _player.GetComponent<FpsController>().CanControl = false;
+                CoroutineStarter.Stop(_swordAttackCoroutine);
+
+                // Sinking FX
+                _playerCamera.Rotate(new(0, 0, 10), Space.Self);
+                _weaponCamera.gameObject.SetActive(false);
+                Vector3 startPos = _playerCamera.localPosition;
+                Vector3 endPos = startPos - new Vector3(0, 0.3f, 0);
+                Coroutine cameraDeadSinkCoroutine = Curve.Tween(AnimationCurve.Linear(0, 0, 1, 1), delay * 0.5f,
+                    t =>
+                    {
+                        _playerCamera.localPosition = Vector3.Lerp(startPos, endPos, t);
+                    },
+                    () =>
+                    {
+                        cameraDeadSinkCoroutine = null;
+                    });
+
+                Sfx.Instance.Play("PlayerDie");
+
+                CoroutineStarter.RunDelayed(delay, () =>
+                {
+                    LevelEnd("Game");
+                });
+
+                didPlayerDie = true;
+
+                foreach (Enemy enemy in _enemies) // Enemies go sleep
+                {
+                    if (enemy.State == EnemyState.AttackCharge)
+                    {
+                        enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
+                    }
+
+                    enemy.State = EnemyState.Sleep;
+                    CoroutineStarter.Stop(enemy.AttackChargeCoroutine);
+                    CoroutineStarter.Stop(enemy.PostAttackWaitCoroutine);
+                }
+            }
+        }
+
+        private void UpdateFireball(GameObject fireball, out bool isDestroyed)
+        {
+            Transform t = fireball.transform;
+            Vector3 moveDir = -t.forward;
+            t.position += moveDir * (_globals.FireballSpeed * Time.deltaTime);
+
+            t.Find("Visual").forward = _player.forward;
+
+            isDestroyed = false;
+            const float FireballHitRadius = 0.1f;
+            Collider[] hits = Physics.OverlapSphere(t.position, FireballHitRadius);
+            foreach (Collider hitCollider in hits)
+            {
+                if (hitCollider.gameObject.layer == LayerMask.NameToLayer("PlayerCollider"))
+                {
+                    OnPlayerHit(out bool _);
+
+                    isDestroyed = true;
+                    break;
+                }
+
+                if (hitCollider.gameObject.CompareTag("Wall"))
+                {
+                    isDestroyed = true;
+                    break;
+                }
+            }
+        }
+
     }
 }

@@ -12,6 +12,7 @@ namespace JamKit
             {
                 if (_instance == null)
                 {
+                    string s = typeof(T).Name;
                     _instance = FindObjectOfType<T>();
 
                     if (_instance == null)

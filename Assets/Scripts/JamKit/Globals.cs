@@ -50,7 +50,9 @@ namespace JamKit
         public GameObject Enemy1Prefab;
         public Texture2D Enemy1Die0;
         public Texture2D Enemy1Die1;
+        public GameObject Enemy2Prefab;
         public GameObject ArrowPrefab;
+        public GameObject FireballPrefab;
 
         [Space]
         public Color FloorColor = Color.white;
@@ -58,17 +60,22 @@ namespace JamKit
         public Color PlayerColor = new(1, 1, 0, 1);
         public Color ExitColor = new(1, 0, 1, 1);
         public Color Enemy1Color = new(1, 0, 0, 1);
+        public Color Enemy2Color = new(1, (128.0f / 255.0f), 0, 1);
 
         [Space]
         public float TweenTickDuration = 0.075f;
         public int PlayerHealth = 3;
         public float Enemy1Speed = 2.0f;
-        public int Enemy1Health = 5;
-        public float EnemyAttackRange = 1.0f;
+        public int Enemy1Health = 6;
+        public float Enemy2Speed = 1.3f;
+        public int Enemy2Health = 4;
+        public float EnemyMeleeAttackRange = 1.0f;
+        public float EnemyRangedAttackRange = 20.0f;
         public AnimationCurve EnemyGetDamagedCurve;
         public float ArrowSpeed = 5.0f;
         public int SwordDamage = 2;
         public int ArrowDamage = 1;
+        public float FireballSpeed = 4.0f;
 
         [Space]
         public Sprite HearthFull;

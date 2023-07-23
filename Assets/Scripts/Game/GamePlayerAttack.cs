@@ -24,7 +24,7 @@ namespace Game
         [SerializeField] private Transform _arrowSpawnSlot;
 
         private bool _isSwordAttacking = false;
-        private Coroutine _attackCoroutine = null;
+        private Coroutine _swordAttackCoroutine = null;
         private WeaponType _currentWeapon = WeaponType.Sword;
         private bool _isSwitchingWeapons = false;
 
@@ -104,7 +104,7 @@ namespace Game
 
         private void SwordAttack()
         {
-            _attackCoroutine = CoroutineStarter.Run(SwordAttackCorotuine());
+            _swordAttackCoroutine = CoroutineStarter.Run(SwordAttackCorotuine());
         }
 
         private IEnumerator SwordAttackCorotuine()
@@ -212,7 +212,7 @@ namespace Game
             // Interrupt enemy
             if (enemy.State == EnemyState.AttackCharge)
             {
-                CoroutineStarter.Stop(enemy.AttackCoroutine);
+                CoroutineStarter.Stop(enemy.AttackChargeCoroutine);
                 enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
                 enemy.State = EnemyState.Move;
             }
@@ -248,10 +248,8 @@ namespace Game
 
         private IEnumerator KillEnemyCoroutine(Enemy enemy)
         {
-            if (enemy.AttackCoroutine != null)
-            {
-                CoroutineStarter.Stop(enemy.AttackCoroutine);
-            }
+            CoroutineStarter.Stop(enemy.AttackChargeCoroutine);
+            CoroutineStarter.Stop(enemy.PostAttackWaitCoroutine);
 
             enemy.VisualTransform.SetLocalPositionAndRotation(enemy.AttackStartPos, enemy.AttackStartRot);
             enemy.State = EnemyState.Dead;

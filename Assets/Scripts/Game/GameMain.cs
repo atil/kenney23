@@ -38,6 +38,7 @@ namespace Game
             _prefabs.Add(_globals.WallColor, _globals.WallPrefab);
             _prefabs.Add(_globals.ExitColor, _globals.ExitPrefab);
             _prefabs.Add(_globals.Enemy1Color, _globals.FloorPrefab);
+            _prefabs.Add(_globals.Enemy2Color, _globals.FloorPrefab);
 
             if (_forceLevel == -1)
             {
@@ -81,7 +82,11 @@ namespace Game
 
                         if (color == _globals.Enemy1Color)
                         {
-                            AddEnemy(color, tilePos);
+                            AddEnemy(tilePos, EnemyType.Enemy1);
+                        }
+                        if (color == _globals.Enemy2Color)
+                        {
+                            AddEnemy(tilePos, EnemyType.Enemy2);
                         }
 
                         bool isBorder = (i == 0 || i == w - 1 || j == 0 || j == h - 1);
@@ -139,4 +144,6 @@ namespace Game
             }
         }
     }
+
+
 }

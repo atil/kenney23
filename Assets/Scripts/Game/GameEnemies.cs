@@ -48,6 +48,7 @@ namespace Game
                 get => Go.transform.position;
                 set => Go.transform.position = value;
             }
+            public bool IsAlive => Health > 0;
         }
 
         [Header("Enemies")]

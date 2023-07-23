@@ -116,6 +116,12 @@ namespace Game
 
         public void OnExitTriggered()
         {
+            if (_enemies.Exists(x => x.IsAlive))
+            {
+                Sfx.Instance.Play("LevelEndWarning");
+                _ui.ShowLevelEndWarning();
+                return;
+            }
             _currentLevel++;
             PlayerPrefs.SetInt("kenney.currentLevel", _currentLevel);
 

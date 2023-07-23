@@ -12,6 +12,7 @@ namespace Game
         [SerializeField] private Transform _heartsRoot;
         [SerializeField] private Transform _damageFeedbackRoot;
         [SerializeField] private Transform _deadFeedbackRoot;
+        [SerializeField] private GameObject _levelEndWarningText;
 
         void Start()
         {
@@ -56,6 +57,20 @@ namespace Game
         {
             _heartsRoot.gameObject.SetActive(false);
             _deadFeedbackRoot.gameObject.SetActive(true);
+        }
+
+        public void ShowLevelEndWarning()
+        {
+            _levelEndWarningText.SetActive(true);
+
+            const float LevelEndWarningDuration = 0.9f;
+            CoroutineStarter.RunDelayed(LevelEndWarningDuration, () =>
+            {
+                if (_levelEndWarningText != null)
+                {
+                    _levelEndWarningText.SetActive(false);
+                }
+            });
         }
     }
 }

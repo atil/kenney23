@@ -34,11 +34,11 @@
 - Sensitivity
 - Submit to jam
 - Map texture variety
-
 - Enemy hit feedback: color change
 
-- Music
 - Weapon feedback: bobbing
+
+- Music
 - Decorations/props
 - Enemy thought bubbles indicating their state
 - Add dog and pet it

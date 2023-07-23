@@ -248,13 +248,18 @@ namespace Game
             Vector3 originalScale = enemy.VisualTransform.localScale;
             Vector3 smallScale = originalScale.WithY(originalScale.y * 0.3f);
             enemy.VisualTransform.localScale = smallScale;
+
+            Material m = enemy.VisualTransform.GetComponent<Renderer>().material;
+            m.SetFloat("_DamageT", 1.0f);
             enemy.GetDamagedCoroutine = Curve.TweenDiscrete(_globals.EnemyGetDamagedCurve, 0.3f, _globals.TweenTickDuration,
                 t =>
                 {
                     enemy.VisualTransform.localScale = Vector3.Lerp(smallScale, originalScale, t);
+                    m.SetFloat("_DamageT", 1.0f - t);
                 },
                 () =>
                 {
+                    m.SetFloat("_DamageT", 0.0f);
                     enemy.VisualTransform.localScale = originalScale;
                     enemy.GetDamagedCoroutine = null;
                 });

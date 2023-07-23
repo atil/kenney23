@@ -106,6 +106,7 @@ namespace Game
 
         // Kenney jam
         public bool CanControl = true;
+        public float BobStrength => Mathf.Clamp01(_velocity.ToHorizontal().magnitude / _maxSpeedAlongOneDimension);
 
         private void Start()
         {

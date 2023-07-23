@@ -35,11 +35,11 @@
 - Submit to jam
 - Map texture variety
 - Enemy hit feedback: color change
-
 - Weapon feedback: bobbing
 
-- Music
 - Decorations/props
+
+- Music
 - Enemy thought bubbles indicating their state
 - Add dog and pet it
 - Story

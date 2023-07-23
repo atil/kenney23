@@ -19,6 +19,8 @@ namespace Game
 
         [SerializeField] private Transform _player;
         [SerializeField] private Transform _playerCamera;
+        [SerializeField] private FpsController _playerController;
+        [SerializeField] private Footsteps _playerFootsteps;
         [SerializeField] private Transform _weaponCamera;
         [SerializeField] private Transform _levelRoot;
         [SerializeField] private Transform _groundCollider;

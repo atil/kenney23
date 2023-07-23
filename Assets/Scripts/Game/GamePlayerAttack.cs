@@ -32,11 +32,14 @@ namespace Game
         private bool _isCrossbowAttacking = false;
 
         private Dictionary<WeaponType, GameObject> _weaponGos = new();
+        private Dictionary<WeaponType, Vector3> _weaponDefaultLocalPositions = new();
 
         private void StartPlayerAttack()
         {
             _weaponGos.Add(WeaponType.Sword, _swordTransform.gameObject);
             _weaponGos.Add(WeaponType.Crossbow, _crossbowTransform.gameObject);
+            _weaponDefaultLocalPositions.Add(WeaponType.Sword, _swordTransform.localPosition);
+            _weaponDefaultLocalPositions.Add(WeaponType.Crossbow, _crossbowTransform.localPosition);
         }
 
         private void UpdatePlayerAttack()
@@ -61,6 +64,15 @@ namespace Game
                 case WeaponType.Sword:
                     if (!_isSwordAttacking && !_isSwitchingWeapons)
                     {
+                        const float MaxBobStrength = 0.03f;
+                        const float MaxBobSpeed = 2.00f;
+                        float speedCoeff = _playerController.BobStrength;
+                        if (speedCoeff < 0.5f) speedCoeff = 0;
+                        float bobX = Mathf.Sin(_playerFootsteps.TotalDistanceCovered * MaxBobSpeed * speedCoeff) * MaxBobStrength * speedCoeff;
+
+                        Vector3 lerpTarget = _weaponDefaultLocalPositions[WeaponType.Sword] + new Vector3(bobX, 0, 0);
+                        _swordTransform.localPosition = Vector3.Lerp(_swordTransform.localPosition, lerpTarget, Time.deltaTime * 20f);
+
                         if (Input.GetMouseButtonDown(0))
                         {
                             SwordAttack();
@@ -74,6 +86,15 @@ namespace Game
                 case WeaponType.Crossbow:
                     if (!_isCrossbowAttacking && !_isSwitchingWeapons)
                     {
+                        const float MaxBobStrength = 0.02f;
+                        const float MaxBobSpeed = 2.0f;
+                        float speedCoeff = _playerController.BobStrength;
+                        if (speedCoeff < 0.5f) speedCoeff = 0;
+                        float bobZ = Mathf.Sin(_playerFootsteps.TotalDistanceCovered * MaxBobSpeed * speedCoeff) * MaxBobStrength * speedCoeff;
+
+                        Vector3 lerpTarget = _weaponDefaultLocalPositions[WeaponType.Crossbow] + new Vector3(0, 0, bobZ);
+                        _crossbowTransform.localPosition = Vector3.Lerp(_crossbowTransform.localPosition, lerpTarget, Time.deltaTime * 20f);
+
                         if (Input.GetMouseButtonDown(0))
                         {
                             CrossbowAttack();
@@ -90,6 +111,8 @@ namespace Game
         private IEnumerator ChangeWeapon(WeaponType from, WeaponType to)
         {
             _isSwitchingWeapons = true;
+            Sfx.Instance.Play("WeaponSwitch");
+
             const float SwitchDuration = 0.6f;
 
             _weaponGos[from].SetActive(false);
@@ -111,6 +134,7 @@ namespace Game
         {
             _isSwordAttacking = true;
 
+            _swordTransform.localPosition = _weaponDefaultLocalPositions[WeaponType.Sword];
             Vector3 pos = _swordTransform.localPosition;
             Quaternion rot = _swordTransform.localRotation;
 
@@ -165,6 +189,7 @@ namespace Game
         {
             _isCrossbowAttacking = true;
 
+            _crossbowTransform.localPosition = _weaponDefaultLocalPositions[WeaponType.Crossbow];
             Vector3 src = _crossbowTransform.localPosition;
             Vector3 target = _crossbowRecoilKeyframe.localPosition;
 

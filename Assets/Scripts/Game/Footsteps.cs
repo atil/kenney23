@@ -23,6 +23,9 @@ namespace Game
         private List<AudioClip> _shuffledClips;
         private Vector3 _prevPos;
         private float _distanceCovered;
+        private float _totalDistanceCovered = 0;
+
+        public float TotalDistanceCovered => _totalDistanceCovered;
 
         private void Start()
         {
@@ -52,7 +55,9 @@ namespace Game
 
             if (isGrounded)
             {
-                _distanceCovered += Vector3.Distance(_prevPos.WithY(0), transform.position.WithY(0));
+                float delta = Vector3.Distance(_prevPos.WithY(0), transform.position.WithY(0));
+                _distanceCovered += delta;
+                _totalDistanceCovered += delta;
             }
             _prevPos = transform.position;
         }

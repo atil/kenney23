@@ -133,6 +133,8 @@ namespace Game
 
         private void TrySwordDamage()
         {
+            Enemy closestHitEnemy = null;
+            float closestDistance = float.MaxValue;
             foreach (Enemy enemy in _enemies)
             {
                 Collider c1 = _swordDamageZone;
@@ -143,8 +145,18 @@ namespace Game
 
                 if (hit)
                 {
-                    OnEnemyHit(enemy, _globals.SwordDamage);
+                    float dist = Vector3.Distance(enemy.Pos, _player.position);
+                    if (dist < closestDistance)
+                    {
+                        closestDistance = dist;
+                        closestHitEnemy = enemy;
+                    }
                 }
+            }
+
+            if (closestHitEnemy != null)
+            {
+                OnEnemyHit(closestHitEnemy, _globals.SwordDamage);
             }
 
         }
@@ -209,6 +221,8 @@ namespace Game
         {
             enemy.Health -= damage;
 
+            Sfx.Instance.PlayRandom("EnemyHit");
+
             // Interrupt enemy
             if (enemy.State == EnemyState.AttackCharge)
             {
@@ -223,8 +237,6 @@ namespace Game
             }
             else // hit
             {
-
-                Sfx.Instance.PlayRandom("EnemyHit");
                 PlayEnemyHitFX(enemy);
             }
         }

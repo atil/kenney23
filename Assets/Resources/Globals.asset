@@ -45,8 +45,11 @@ MonoBehaviour:
   _endSceneCameraBackgroundColor: {r: 0.45882353, g: 0.2627451, b: 0.2901961, a: 1}
   _buildSplashBackgroundColor: {r: 0.45882353, g: 0.2627451, b: 0.2901961, a: 1}
   Levels:
-  - {fileID: 2800000, guid: 722712fb52bb01648935ae5afa0bb8ac, type: 3}
-  - {fileID: 2800000, guid: 722712fb52bb01648935ae5afa0bb8ac, type: 3}
+  - {fileID: 2800000, guid: b9388468e17c0354e82424cf0f0bd9b2, type: 3}
+  - {fileID: 2800000, guid: dc99a30891595744495f3e453bafc358, type: 3}
+  - {fileID: 2800000, guid: 03cecc35e80055a44b8dab32f8cc0ceb, type: 3}
+  - {fileID: 2800000, guid: 2e843518819bc5c408c4e110998452fd, type: 3}
+  - {fileID: 2800000, guid: 43dd8bc3f967d27428ee0dcbe7f731a1, type: 3}
   FloorPrefab: {fileID: 6309663980564988747, guid: af79a406cf0d49b438095df7eccf5b22, type: 3}
   WallPrefab: {fileID: 1920152320156087891, guid: a66040264490cb84ea6a0060d448157d, type: 3}
   BorderPrefab: {fileID: 1920152320156087891, guid: 2864d2fce8d63f8418e7287d541bdf17, type: 3}

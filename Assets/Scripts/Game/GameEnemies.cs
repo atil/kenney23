@@ -121,8 +121,18 @@ namespace Game
         private bool CanSeePlayer(Enemy enemy)
         {
             Vector3 toPlayer = _player.transform.position - enemy.Pos;
-            const float SphereCastRadius = 0.5f;
-            int hitAmount = Physics.SphereCastNonAlloc(enemy.Pos, SphereCastRadius, toPlayer.normalized, _raycastResults, toPlayer.magnitude);
+            float castDistance = toPlayer.magnitude - 0.3f;
+            int hitAmount = 0;
+            if (enemy.Type == EnemyType.Enemy1)
+            {
+                hitAmount = Physics.RaycastNonAlloc(new Ray(enemy.Pos, toPlayer.normalized), _raycastResults, castDistance);
+            }
+            else if (enemy.Type == EnemyType.Enemy2)
+            {
+                const float SphereCastRadius = 0.2f;
+                hitAmount = Physics.SphereCastNonAlloc(enemy.Pos, SphereCastRadius, toPlayer.normalized, _raycastResults, castDistance);
+            }
+
             bool hasWall = false;
             for (int i = 0; i < hitAmount; i++)
             {
@@ -155,13 +165,17 @@ namespace Game
                     Vector3 source = enemy.Pos.WithY(0.01f);
                     Vector3 target = _player.position.WithY(0.01f);
                     bool succ = NavMesh.CalculatePath(source, target, NavMesh.AllAreas, enemy.WalkPath);
-                    Debug.Assert(succ, $"There should always be path src: {source} target: {target}");
 
                     Vector3[] corners = enemy.WalkPath.corners;
+#if UNITY_EDITOR
                     DrawPath(corners);
-                    Debug.Assert(corners.Length >= 2, $"It should be at least a straight line src: {source} target: {target}");
+#endif
+                    Vector3 currentMoveTarget;
+                    if (corners.Length >= 2) currentMoveTarget = corners[1];
+                    else if (corners.Length == 1) currentMoveTarget = corners[0];
+                    else currentMoveTarget = target;
 
-                    Vector3 dir = (corners[1] - enemy.Pos).normalized;
+                    Vector3 dir = (currentMoveTarget - enemy.Pos).normalized;
                     Vector3 deltaMove = dir * (enemy.MoveSpeed * Time.deltaTime);
                     enemy.Pos += deltaMove;
 

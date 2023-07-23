@@ -342,7 +342,7 @@ MonoBehaviour:
   _collisionVolume: {fileID: 136462993707527496}
   _excludedLayers:
     serializedVersion: 2
-    m_Bits: 832
+    m_Bits: 960
   _footsteps: {fileID: -5602861654778977998}
   _debugInfo: 0
   _groundedRayPositions:

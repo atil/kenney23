@@ -22,13 +22,14 @@
 ------- 3rd day ----------
 - Fix dead enemies attacking bug
 - Add ranged enemy
-
 - Make level textures a little more readable
 
 - Level design
+
 - Find name
 - Story
 - Update store page
+- Bug: sometimes enemies attack the player directly from level start
 
 - Enemy hit feedback: color change
 - Weapon feedback: bobbing

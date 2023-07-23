@@ -16,7 +16,7 @@ PlayerSettings:
   productName: Kenney23
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0.45882353, g: 0.2627451, b: 0.2901961, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1

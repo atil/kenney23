@@ -47,12 +47,18 @@ namespace JamKit
                 Curve.TweenDiscrete(sceneTransitionParams.Curve,
                     sceneTransitionParams.Duration,
                     _globals.DiscreteTickInterval,
-                    t => { _coverImage.color = Color.Lerp(srcColor, targetColor, t); },
-                    () =>
+                    t =>
                     {
-                        _coverImage.color = targetColor;
                         if (_coverImage != null) // Might be destroyed during fade
                         {
+                            _coverImage.color = Color.Lerp(srcColor, targetColor, t);
+                        }
+                    },
+                    () =>
+                    {
+                        if (_coverImage != null) // Might be destroyed during fade
+                        {
+                            _coverImage.color = targetColor;
                         }
                         postAction?.Invoke();
                     });

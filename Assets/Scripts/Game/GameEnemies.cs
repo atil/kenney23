@@ -118,6 +118,24 @@ namespace Game
             }
         }
 
+        private bool CanSeePlayer(Enemy enemy)
+        {
+            Vector3 toPlayer = _player.transform.position - enemy.Pos;
+            const float SphereCastRadius = 0.5f;
+            int hitAmount = Physics.SphereCastNonAlloc(enemy.Pos, SphereCastRadius, toPlayer.normalized, _raycastResults, toPlayer.magnitude);
+            bool hasWall = false;
+            for (int i = 0; i < hitAmount; i++)
+            {
+                if (_raycastResults[i].transform.gameObject.CompareTag("Wall"))
+                {
+                    hasWall = true;
+                    break;
+                }
+            }
+
+            return !hasWall;
+        }
+
         private void UpdateEnemy(Enemy enemy)
         {
             enemy.RootTransform.forward = _player.forward;
@@ -125,21 +143,7 @@ namespace Game
             switch (enemy.State)
             {
                 case EnemyState.Sleep:
-
-                    Vector3 toPlayer = _player.transform.position - enemy.Pos;
-                    Ray ray = new(enemy.Pos, toPlayer.normalized);
-                    int hitAmount = Physics.RaycastNonAlloc(ray, _raycastResults, toPlayer.magnitude);
-                    bool hasWall = false;
-                    for (int i = 0; i < hitAmount; i++)
-                    {
-                        if (_raycastResults[i].transform.gameObject.CompareTag("Wall"))
-                        {
-                            hasWall = true;
-                            break;
-                        }
-                    }
-
-                    if (!hasWall && !IsPlayerDead) // Awakened!
+                    if (CanSeePlayer(enemy) && !IsPlayerDead) // Awakened!
                     {
                         string sfxName = enemy.Type == EnemyType.Enemy1 ? "Enemy1Awake" : "Enemy2Awake";
                         Sfx.Instance.PlayRandom(sfxName);
@@ -163,7 +167,7 @@ namespace Game
 
                     float range = enemy.Type == EnemyType.Enemy1 ? _globals.EnemyMeleeAttackRange : _globals.EnemyRangedAttackRange;
                     bool inRange = Vector3.Distance(enemy.Pos.ToHorizontal(), _player.position.ToHorizontal()) < range;
-                    if (inRange && enemy.GetDamagedCoroutine == null)
+                    if (inRange && CanSeePlayer(enemy) && enemy.GetDamagedCoroutine == null)
                     {
                         enemy.State = EnemyState.AttackCharge;
 

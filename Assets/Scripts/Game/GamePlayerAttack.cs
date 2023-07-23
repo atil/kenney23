@@ -196,7 +196,7 @@ namespace Game
             arrowTransform.position += arrowTransform.forward * (_globals.ArrowSpeed * Time.deltaTime);
 
             isDestroyed = false;
-            const float ArrowHitRadius = 0.5f;
+            const float ArrowHitRadius = 0.1f;
             Collider[] hits = Physics.OverlapSphere(arrowTransform.position, ArrowHitRadius);
             foreach (Collider hitCollider in hits)
             {

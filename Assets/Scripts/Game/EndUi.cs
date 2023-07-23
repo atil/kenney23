@@ -14,6 +14,8 @@ namespace Game
             Camera.backgroundColor = Globals.EndSceneCameraBackgroundColor;
             PlayerPrefs.SetInt("kenney.currentLevel", 0);
 
+            Sfx.Instance.Play("kenney");
+
             FadeIn();
         }
 

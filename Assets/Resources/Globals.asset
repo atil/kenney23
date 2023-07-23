@@ -50,6 +50,14 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 03cecc35e80055a44b8dab32f8cc0ceb, type: 3}
   - {fileID: 2800000, guid: 2e843518819bc5c408c4e110998452fd, type: 3}
   - {fileID: 2800000, guid: 43dd8bc3f967d27428ee0dcbe7f731a1, type: 3}
+  - {fileID: 2800000, guid: b327ef4cb3326754b900c3451f269179, type: 3}
+  - {fileID: 2800000, guid: 6826fab218382804280ec42416714d34, type: 3}
+  - {fileID: 2800000, guid: e8d64ebdb3288e444b2aa48849b7df3d, type: 3}
+  - {fileID: 2800000, guid: f6d31c87da99f0c45a0a28f893bc2f8e, type: 3}
+  - {fileID: 2800000, guid: c486312314fe1134cadd6aa670cdfeeb, type: 3}
+  - {fileID: 2800000, guid: cf5615c227b715f4c82d47f0d69168c1, type: 3}
+  - {fileID: 2800000, guid: 8e07811072182ef4bbb1180ec8b434f2, type: 3}
+  - {fileID: 2800000, guid: a85d9eddcee68b242bf9efc5cdf4e8b0, type: 3}
   FloorPrefab: {fileID: 6309663980564988747, guid: af79a406cf0d49b438095df7eccf5b22, type: 3}
   WallPrefab: {fileID: 1920152320156087891, guid: a66040264490cb84ea6a0060d448157d, type: 3}
   BorderPrefab: {fileID: 1920152320156087891, guid: 2864d2fce8d63f8418e7287d541bdf17, type: 3}

@@ -26,17 +26,17 @@
 - Level design: with melee enemy
 - Prevent exit if there are enemies alive
 - SFX: enemy killed, enemy swing, fireball, crossbow fire, arrow wall hit, level end warning
-
 - Level design: with ranged enemy
-
+- Replace UI buttons
 - Find name
-- Story
-- Update store page
 - Bug: sometimes enemies attack the player directly from level start
+
+- Update store page
 
 - Enemy hit feedback: color change
 - Weapon feedback: bobbing
-- Map texture variety, 
-- Decorations/props, 
+- Map texture variety
+- Decorations/props
 - Enemy thought bubbles indicating their state
 - Add dog and pet it
+- Story

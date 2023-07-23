@@ -13,6 +13,7 @@ namespace Game
         [SerializeField] private Transform _damageFeedbackRoot;
         [SerializeField] private Transform _deadFeedbackRoot;
         [SerializeField] private GameObject _levelEndWarningText;
+        [SerializeField] private GameObject _switchWeaponHintText;
 
         void Start()
         {
@@ -69,6 +70,20 @@ namespace Game
                 if (_levelEndWarningText != null)
                 {
                     _levelEndWarningText.SetActive(false);
+                }
+            });
+        }
+
+        public void ShowSwitchWeaponHint()
+        {
+            _switchWeaponHintText.SetActive(true);
+
+            const float HintDuration = 2.0f;
+            CoroutineStarter.RunDelayed(HintDuration, () =>
+            {
+                if (_switchWeaponHintText != null)
+                {
+                    _switchWeaponHintText.SetActive(false);
                 }
             });
         }

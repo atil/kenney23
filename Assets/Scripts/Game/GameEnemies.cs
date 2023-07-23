@@ -59,7 +59,6 @@ namespace Game
         private List<GameObject> _fireballs = new();
 
         private const int MaxRayCastResults = 20;
-        private RaycastHit[] _raycastResults = new RaycastHit[MaxRayCastResults];
 
         private Coroutine _playerDamagedCameraFxCoroutine = null;
 
@@ -123,21 +122,21 @@ namespace Game
         {
             Vector3 toPlayer = _player.transform.position - enemy.Pos;
             float castDistance = toPlayer.magnitude - 0.3f;
-            int hitAmount = 0;
+            RaycastHit[] hits = new RaycastHit[0];
             if (enemy.Type == EnemyType.Enemy1)
             {
-                hitAmount = Physics.RaycastNonAlloc(new Ray(enemy.Pos, toPlayer.normalized), _raycastResults, castDistance);
+                hits = Physics.RaycastAll(new Ray(enemy.Pos, toPlayer.normalized), castDistance);
             }
             else if (enemy.Type == EnemyType.Enemy2)
             {
                 const float SphereCastRadius = 0.2f;
-                hitAmount = Physics.SphereCastNonAlloc(enemy.Pos, SphereCastRadius, toPlayer.normalized, _raycastResults, castDistance);
+                hits = Physics.SphereCastAll(enemy.Pos, SphereCastRadius, toPlayer.normalized, castDistance);
             }
 
             bool hasWall = false;
-            for (int i = 0; i < hitAmount; i++)
+            foreach (RaycastHit hit in hits)
             {
-                if (_raycastResults[i].transform.gameObject.CompareTag("Wall"))
+                if (hit.transform.gameObject.CompareTag("Wall"))
                 {
                     hasWall = true;
                     break;
@@ -277,7 +276,7 @@ namespace Game
 
         private void OnPlayerHit(out bool didPlayerDie)
         {
-            //_playerHealth--;
+            _playerHealth--;
 
             if (_playerHealth > 0) // ow!
             {

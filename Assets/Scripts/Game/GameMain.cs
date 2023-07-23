@@ -31,8 +31,6 @@ namespace Game
 
         private void Start()
         {
-            Sfx.Instance.Play("LevelStart");
-
             _prefabs.Add(_globals.FloorColor, _globals.FloorPrefab);
             _prefabs.Add(_globals.PlayerColor, _globals.FloorPrefab);
             _prefabs.Add(_globals.WallColor, _globals.WallPrefab);
@@ -58,12 +56,19 @@ namespace Game
 
             _navmeshSurface.BuildNavMesh();
 
+            Sfx.Instance.Play("LevelStart");
+
         }
 
         private void LoadLevelFrom(Texture2D levelTexture)
         {
+            if (levelTexture.name == "LevelCrossbowIntro")
+            {
+                _ui.ShowSwitchWeaponHint();
+            }
+
             int w = levelTexture.width;
-            int h = levelTexture.width;
+            int h = levelTexture.height;
 
             _groundCollider.transform.position = new Vector3(w / 2.0f, 0, h / 2.0f);
 

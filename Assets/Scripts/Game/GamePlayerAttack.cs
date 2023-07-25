@@ -193,9 +193,8 @@ namespace Game
             Vector3 src = _crossbowTransform.localPosition;
             Vector3 target = _crossbowRecoilKeyframe.localPosition;
 
-            const float CrossbowRecoilDuration = 0.6f;
             _crossbowTransform.localPosition = target;
-            CoroutineStarter.RunDelayed(CrossbowRecoilDuration, () =>
+            CoroutineStarter.RunDelayed(_globals.CrossbowRecoilDuration, () =>
             {
                 Curve.TweenDiscrete(AnimationCurve.Linear(0, 0, 1, 1), 0.3f, _globals.DiscreteTickInterval * 0.5f,
                     t =>

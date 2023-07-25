@@ -78,6 +78,7 @@ namespace JamKit
         public float ArrowSpeed = 5.0f;
         public int SwordDamage = 2;
         public int ArrowDamage = 1;
+        public float CrossbowRecoilDuration = 0.4f;
         public float FireballSpeed = 4.0f;
 
         [Space]

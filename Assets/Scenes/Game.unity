@@ -1776,9 +1776,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
+  m_CollectObjects: 1
+  m_Size: {x: 64, y: 1, z: 64}
+  m_Center: {x: 0, y: 0, z: 0}
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -1790,7 +1790,7 @@ MonoBehaviour:
   m_TileSize: 256
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.1
-  m_MinRegionArea: 2
+  m_MinRegionArea: 1
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
 --- !u!4 &1568164655
@@ -1801,7 +1801,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1568164653}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 32, y: 0, z: 32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1939,7 +1939,7 @@ MonoBehaviour:
   _fireballsRoot: {fileID: 0}
   _globals: {fileID: 11400000, guid: b27ece0341ed8b14ea3b992f273fbb00, type: 2}
   _ui: {fileID: 1470214248}
-  _forceLevel: -1
+  _forceLevel: 10
   _player: {fileID: 1354250682}
   _playerCamera: {fileID: 588154558}
   _playerController: {fileID: 1848683394}

@@ -56,6 +56,8 @@ namespace JamKit
         public GameObject Enemy2Prefab;
         public GameObject ArrowPrefab;
         public GameObject FireballPrefab;
+        public GameObject Prop1Prefab;
+        public GameObject Prop2Prefab;
 
         [Space]
         public Color FloorColor = Color.white;
@@ -64,6 +66,7 @@ namespace JamKit
         public Color ExitColor = new(1, 0, 1, 1);
         public Color Enemy1Color = new(1, 0, 0, 1);
         public Color Enemy2Color = new(1, (128.0f / 255.0f), 0, 1);
+        public Color PropColor = new(0, 0, 1, 1);
 
         [Space]
         public float TweenTickDuration = 0.075f;

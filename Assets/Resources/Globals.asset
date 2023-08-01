@@ -69,12 +69,15 @@ MonoBehaviour:
   Enemy2Prefab: {fileID: 4179976915047189957, guid: bda347c5f3d07f14e8c3bf39cd1bd787, type: 3}
   ArrowPrefab: {fileID: 3165359100184222, guid: e430aad61c2298142b5d21a2711faa3c, type: 3}
   FireballPrefab: {fileID: 4247942308304044834, guid: 33ed2e44c098d1c4c84991bcd5daa475, type: 3}
+  Prop1Prefab: {fileID: 6579181242641121973, guid: 0af5cb6042e08624d815f7f06fb49ce9, type: 3}
+  Prop2Prefab: {fileID: 6579181242641121973, guid: 11281c9f7c8aff14db3b7097f1aa07e0, type: 3}
   FloorColor: {r: 1, g: 1, b: 1, a: 1}
   WallColor: {r: 0, g: 0, b: 0, a: 1}
   PlayerColor: {r: 1, g: 1, b: 0, a: 1}
   ExitColor: {r: 1, g: 0, b: 1, a: 1}
   Enemy1Color: {r: 1, g: 0, b: 0, a: 1}
   Enemy2Color: {r: 1, g: 0.5019608, b: 0, a: 1}
+  PropColor: {r: 0, g: 0, b: 1, a: 1}
   TweenTickDuration: 0.075
   PlayerHealth: 3
   Enemy1Speed: 2

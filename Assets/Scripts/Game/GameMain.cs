@@ -28,6 +28,8 @@ namespace Game
 
         private Dictionary<Color, GameObject> _prefabs = new();
 
+        private List<GameObject> _props = new();
+
         private int _playerHealth;
         private bool IsPlayerDead => _playerHealth <= 0;
 
@@ -39,6 +41,7 @@ namespace Game
             _prefabs.Add(_globals.ExitColor, _globals.ExitPrefab);
             _prefabs.Add(_globals.Enemy1Color, _globals.FloorPrefab);
             _prefabs.Add(_globals.Enemy2Color, _globals.FloorPrefab);
+            _prefabs.Add(_globals.PropColor, _globals.FloorPrefab);
 
 #if UNITY_EDITOR
             if (_forceLevel == -1)
@@ -53,6 +56,8 @@ namespace Game
             _currentLevel = PlayerPrefs.GetInt("kenney.currentLevel", 0);
 #endif
 
+
+            _playerController.Sensitivity = PlayerPrefs.GetFloat("kenney.sensitivity", 150); // 150 is the default value on script
             _playerHealth = _globals.PlayerHealth;
             StartPlayerAttack();
 
@@ -99,6 +104,10 @@ namespace Game
                         {
                             AddEnemy(tilePos, EnemyType.Enemy2);
                         }
+                        if (color == _globals.PropColor)
+                        {
+                            AddProp(tilePos);
+                        }
 
                         if (prefab == _globals.WallPrefab)
                         {
@@ -139,10 +148,29 @@ namespace Game
             }
         }
 
+        private void AddProp(Vector3 tilePos)
+        {
+            GameObject propPrefab = UnityEngine.Random.value > 0.5f ? _globals.Prop1Prefab : _globals.Prop2Prefab;
+            GameObject propGo = Instantiate(propPrefab, _levelRoot);
+            const float PropVisualHorizontalOffset = 0.15f;
+            const float PropVisualHeight = 0.08f;
+            propGo.transform.position = tilePos.WithY(PropVisualHeight) + new Vector3(UnityEngine.Random.value * PropVisualHorizontalOffset, 0, UnityEngine.Random.value * PropVisualHorizontalOffset);
+            _props.Add(propGo);
+        }
+
         private void Update()
         {
             UpdatePlayerAttack();
             UpdateEnemies();
+            UpdateProps();
+        }
+
+        private void UpdateProps()
+        {
+            foreach (GameObject propGo in _props)
+            {
+                propGo.transform.forward = _player.forward;
+            }
         }
 
         public void OnExitTriggered()
@@ -167,6 +195,7 @@ namespace Game
             _player.GetComponent<FpsController>().CanControl = false;
             CoroutineStarter.RunDelayed(_globals.SceneTransitionParams.Duration + 0.01f, () =>
             {
+                PlayerPrefs.SetFloat("kenney.sensitivity", _playerController.Sensitivity);
                 SceneManager.LoadScene(nextSceneName);
             });
         }
